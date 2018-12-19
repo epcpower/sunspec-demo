@@ -1,0 +1,4 @@
+eclipse
+vim
+python
+git

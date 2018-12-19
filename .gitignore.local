@@ -1,0 +1,3 @@
+/.env.local
+/models/smdx_*.xml
+/.idea
