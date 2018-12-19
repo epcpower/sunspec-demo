@@ -2,7 +2,7 @@ import contextlib
 import os
 
 import attr
-import sunspec
+import sunspec.core.device
 
 
 @contextlib.contextmanager

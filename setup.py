@@ -7,6 +7,7 @@ setuptools.setup(
     package_dir={'': 'src'},
     include_package_data=True,
     install_requires=[
+        'click',
         'pysunspec',
     ],
     extras_require={
@@ -17,8 +18,7 @@ setuptools.setup(
     entry_points={
         'console_scripts': [
             (
-                'gridtied = epcsunspecdemo.gridtied:entry_point',
-                'dcdc = epcsunspecdemo.dcdc:entry_point',
+                'epcsunspecdemo = epcsunspecdemo.cli:cli',
             ),
         ],
     },

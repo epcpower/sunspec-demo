@@ -1,4 +1,5 @@
 attrs==18.2.0
+click==7.0
 git+https://github.com/altendky/pysunspec@100d9cade8ce2aa4a67b78d85b310e15dd01b9f5#egg=pysunspec
 
 -e .
