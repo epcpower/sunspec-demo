@@ -286,7 +286,7 @@ def serial(
 @click.option(
     '--address',
     required=True,
-    help='The IP or host name of the converter',
+    help='The IP address or host name of the converter',
 )
 @click.option(
     '--port',
