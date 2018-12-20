@@ -1,6 +1,8 @@
+import sys
 import time
 
 import click
+import serial.serialutil
 import sunspec.core.client
 
 import epcsunspecdemo.utils
@@ -179,13 +181,17 @@ def dcdc_demo(device, invert_enable, cycles):
         print("controlset")
 
 
-@click.group()
+@click.group(
+    help='Demo connection to a grid-tied converter',
+)
 @click.pass_obj
 def gridtied(config):
     config.common = gridtied_demo
 
 
-@click.group()
+@click.group(
+    help='Demo connection to a DCDC converter',
+)
 @click.pass_obj
 def dcdc(config):
     config.common = dcdc_demo
@@ -195,16 +201,59 @@ models_option = click.option(
     '--models',
     type=click.Path(file_okay=False),
     default='models',
+    help='Path to the directory containing custom smdx_*.xml files',
 )
-invert_enable_option = click.option('--invert-enable/--no-invert-enable')
-slave_id_option = click.option('--slave-id', type=int, default=1)
-max_count_option = click.option('--max-count', type=int, default=100)
-cycles_option = click.option('--cycles', type=int, default=25)
+
+invert_enable_option = click.option(
+    '--invert-enable/--no-invert-enable',
+    help='Invert the converters hardware enable input',
+)
+
+slave_id_option = click.option(
+    '--slave-id',
+    type=int,
+    default=1,
+    help='Node ID of the converter',
+)
+
+max_count_option = click.option(
+    '--max-count',
+    type=int,
+    default=100,
+    help='Maximum number of registers to be requested at once',
+)
+
+cycles_option = click.option(
+    '--cycles',
+    type=int,
+    default=25,
+    help='Number of demo cycles to run',
+)
 
 
-@click.command()
-@click.option('--port', required=True)
-@click.option('--baudrate', type=int, default=9600)
+if sys.platform.startswith('win'):
+    port_help = 'Name of the COM port'
+else:
+    port_help = 'Path to the serial device'
+
+
+@click.command(
+    help='Demo direct serial Modbus RTU connection',
+)
+@click.option(
+    '--port',
+    required=True,
+    help=port_help,
+)
+@click.option(
+    '--baudrate',
+    type=click.Choice(
+        str(rate)
+        for rate in serial.serialutil.SerialBase.BAUDRATES
+    ),
+    default=9600,
+    help='Serial baudrate',
+)
 @models_option
 @invert_enable_option
 @slave_id_option
@@ -237,9 +286,20 @@ def serial(
     )
 
 
-@click.command()
-@click.option('--address', required=True)
-@click.option('--port', type=int, default=502)
+@click.command(
+    help='Demo Modbus TCP connection',
+)
+@click.option(
+    '--address',
+    required=True,
+    help='The IP or host name of the converter',
+)
+@click.option(
+    '--port',
+    type=int,
+    default=502,
+    help='The TCP port on the converter',
+)
 @models_option
 @invert_enable_option
 @slave_id_option

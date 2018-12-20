@@ -19,7 +19,10 @@ def cli(context):
 epcsunspecdemo.demos.add_commands(group=cli)
 
 
-@cli.command(name='list-ports')
+@cli.command(
+    name='list-ports',
+    help='List available serial ports',
+)
 def list_ports():
     for port in serial.tools.list_ports.comports():
         print(port)
