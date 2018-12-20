@@ -2,7 +2,7 @@ import attr
 import click
 import sunspec.core.client
 
-import epcsunspecdemo.samples
+import epcsunspecdemo.demos
 
 
 @attr.s
@@ -19,13 +19,13 @@ def cli(context):
 @cli.group()
 @click.pass_obj
 def gridtied(config):
-    config.common = epcsunspecdemo.samples.gridtied
+    config.common = epcsunspecdemo.demos.gridtied
 
 
 @cli.group()
 @click.pass_obj
 def dcdc(config):
-    config.common = epcsunspecdemo.samples.dcdc
+    config.common = epcsunspecdemo.demos.dcdc
 
 
 models_option = click.option(
