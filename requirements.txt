@@ -1,5 +1,12 @@
 attrs==18.2.0
-click==7.0
+certifi==2018.11.29
+chardet==3.0.4
+Click==7.0
+future==0.17.1
+idna==2.8
+pyserial==3.4
 git+https://github.com/altendky/pysunspec@100d9cade8ce2aa4a67b78d85b310e15dd01b9f5#egg=pysunspec
+requests==2.21.0
+urllib3==1.24.1
 
 -e .
