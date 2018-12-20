@@ -5,6 +5,7 @@ import click
 import serial.serialutil
 import sunspec.core.client
 
+import epcsunspecdemo.clishared
 import epcsunspecdemo.utils
 
 
@@ -197,13 +198,6 @@ def dcdc(config):
     config.common = dcdc_demo
 
 
-models_option = click.option(
-    '--models',
-    type=click.Path(file_okay=False),
-    default='models',
-    help='Path to the directory containing custom smdx_*.xml files',
-)
-
 invert_enable_option = click.option(
     '--invert-enable/--no-invert-enable',
     help='Invert the converters hardware enable input',
@@ -254,7 +248,7 @@ else:
     default='9600',
     help='Serial baudrate',
 )
-@models_option
+@epcsunspecdemo.clishared.model_path_option
 @invert_enable_option
 @slave_id_option
 @max_count_option
@@ -263,14 +257,14 @@ else:
 def serial(
         config,
         port,
-        models,
+        model_path,
         invert_enable,
         slave_id,
         max_count,
         baudrate,
         cycles,
 ):
-    with epcsunspecdemo.utils.fresh_smdx_path(models):
+    with epcsunspecdemo.utils.fresh_smdx_path(model_path):
         device = sunspec.core.client.SunSpecClientDevice(
             slave_id=slave_id,
             max_count=max_count,
@@ -300,7 +294,7 @@ def serial(
     default=502,
     help='The TCP port on the converter',
 )
-@models_option
+@epcsunspecdemo.clishared.model_path_option
 @invert_enable_option
 @slave_id_option
 @max_count_option
@@ -310,13 +304,13 @@ def tcp(
         config,
         ip,
         port,
-        models,
+        model_path,
         invert_enable,
         slave_id,
         max_count,
         cycles,
 ):
-    with epcsunspecdemo.utils.fresh_smdx_path(models):
+    with epcsunspecdemo.utils.fresh_smdx_path(model_path):
         device = sunspec.core.client.SunSpecClientDevice(
             slave_id=slave_id,
             max_count=max_count,
@@ -337,5 +331,5 @@ def add_commands(group):
     group.add_command(dcdc, name='dcdc')
 
     for group in (gridtied, dcdc):
-        group.add_command(serial, name='serial')
-        group.add_command(tcp, name='tcp')
+        group.add_command(serial)
+        group.add_command(tcp)
