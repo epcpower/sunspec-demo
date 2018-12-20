@@ -302,7 +302,7 @@ def serial(
 @click.pass_obj
 def tcp(
         config,
-        ip,
+        address,
         port,
         model_path,
         invert_enable,
@@ -315,7 +315,7 @@ def tcp(
             slave_id=slave_id,
             max_count=max_count,
             device_type=sunspec.core.client.TCP,
-            ipaddr=ip,
+            ipaddr=address,
             ipport=port,
         )
 
