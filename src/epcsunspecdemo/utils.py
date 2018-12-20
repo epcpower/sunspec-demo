@@ -5,6 +5,16 @@ import attr
 import sunspec.core.device
 
 
+def click_show_default_true():
+    # https://github.com/pallets/click/issues/646#issuecomment-435317967
+
+    import functools
+
+    import click
+
+    click.option = functools.partial(click.option, show_default=True)
+
+
 @contextlib.contextmanager
 def fresh_smdx_path(*paths):
     original_pathlist = sunspec.core.device.file_pathlist

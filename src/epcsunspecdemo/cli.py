@@ -2,6 +2,10 @@ import attr
 import click
 import serial.tools.list_ports
 
+# https://github.com/pallets/click/issues/646#issuecomment-435317967
+import epcsunspecdemo.utils
+epcsunspecdemo.utils.click_show_default_true()
+
 import epcsunspecdemo.demos
 
 
