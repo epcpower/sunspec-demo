@@ -251,7 +251,7 @@ else:
         str(rate)
         for rate in serial.serialutil.SerialBase.BAUDRATES
     ),
-    default=9600,
+    default='9600',
     help='Serial baudrate',
 )
 @models_option
