@@ -238,7 +238,8 @@ def serial(
 
 
 @click.command()
-@click.option('--ip')
+@click.option('--ip', required=True)
+@click.option('--port', type=int, default=502)
 @models_option
 @invert_enable_option
 @slave_id_option
@@ -248,6 +249,7 @@ def serial(
 def tcp(
         config,
         ip,
+        port,
         models,
         invert_enable,
         slave_id,
@@ -260,6 +262,7 @@ def tcp(
             max_count=max_count,
             device_type=sunspec.core.client.TCP,
             ipaddr=ip,
+            ipport=port,
         )
 
     config.common(
