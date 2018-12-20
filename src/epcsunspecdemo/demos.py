@@ -238,7 +238,7 @@ def serial(
 
 
 @click.command()
-@click.option('--ip', required=True)
+@click.option('--address', required=True)
 @click.option('--port', type=int, default=502)
 @models_option
 @invert_enable_option
