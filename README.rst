@@ -46,7 +46,6 @@ Linux
 Running
 -------
 
-Below we will abbreviate the command to just ``epcsunspecdemo`` to avoid platform specific details where possible.
 A list of commands and options will be reported if ``--help`` is passed.
 This can be done at any layer in the tree of subcommands.
 When options provide defaults they will be listed in the help output.
