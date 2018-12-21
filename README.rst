@@ -64,6 +64,13 @@ As an aid to selecting the proper serial port this subcommand will report a list
 In some cases extra identifying information may be provided as well.
 
 
+``scan``
+========
+
+Scan for responding nodes in a given node ID range.
+Provides both direct ``serial`` and ``tcp`` subcommands
+
+
 ``gridtied``, ``dcdc``
 =========================
 

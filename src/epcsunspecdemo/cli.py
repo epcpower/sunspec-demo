@@ -8,6 +8,7 @@ epcsunspecdemo.utils.click_show_default_true()
 
 import epcsunspecdemo.demos
 import epcsunspecdemo.models
+import epcsunspecdemo.scan
 
 
 @attr.s
@@ -23,6 +24,7 @@ def cli(context):
 
 epcsunspecdemo.demos.add_commands(group=cli)
 cli.add_command(epcsunspecdemo.models.get_models)
+cli.add_command(epcsunspecdemo.scan.cli, name='scan')
 
 
 @cli.command(

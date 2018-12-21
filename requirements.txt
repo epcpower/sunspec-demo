@@ -5,7 +5,7 @@ Click==7.0
 future==0.17.1
 idna==2.8
 pyserial==3.4
-git+https://github.com/altendky/pysunspec@100d9cade8ce2aa4a67b78d85b310e15dd01b9f5#egg=pysunspec
+git+https://github.com/altendky/pysunspec@2d0ba2f7a580a8964c12a96455e6ba37475ac73e#egg=pysunspec
 requests==2.21.0
 urllib3==1.24.1
 

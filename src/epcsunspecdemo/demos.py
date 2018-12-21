@@ -1,4 +1,3 @@
-import sys
 import time
 
 import click
@@ -225,29 +224,12 @@ cycles_option = click.option(
 )
 
 
-if sys.platform.startswith('win'):
-    port_help = 'Name of the COM port'
-else:
-    port_help = 'Path to the serial device'
-
-
 @click.command(
     help='Demo direct serial Modbus RTU connection',
 )
-@click.option(
-    '--port',
-    required=True,
-    help=port_help,
-)
-@click.option(
-    '--baudrate',
-    type=click.Choice(
-        str(rate)
-        for rate in serial.serialutil.SerialBase.BAUDRATES
-    ),
-    default='9600',
-    help='Serial baudrate',
-)
+@epcsunspecdemo.clishared.serial_port_option
+@epcsunspecdemo.clishared.serial_baudrate_option
+@epcsunspecdemo.clishared.timeout_option
 @epcsunspecdemo.clishared.model_path_option
 @invert_enable_option
 @slave_id_option
@@ -257,6 +239,7 @@ else:
 def serial(
         config,
         port,
+        timeout,
         model_path,
         invert_enable,
         slave_id,
@@ -271,6 +254,7 @@ def serial(
             device_type=sunspec.core.client.RTU,
             name=port,
             baudrate=baudrate,
+            timeout=timeout,
         )
 
     config.common(
@@ -283,17 +267,9 @@ def serial(
 @click.command(
     help='Demo Modbus TCP connection',
 )
-@click.option(
-    '--address',
-    required=True,
-    help='The IP address or host name of the converter',
-)
-@click.option(
-    '--port',
-    type=int,
-    default=502,
-    help='The TCP port on the converter',
-)
+@epcsunspecdemo.clishared.tcp_address_option
+@epcsunspecdemo.clishared.tcp_port_option
+@epcsunspecdemo.clishared.timeout_option
 @epcsunspecdemo.clishared.model_path_option
 @invert_enable_option
 @slave_id_option
@@ -304,6 +280,7 @@ def tcp(
         config,
         address,
         port,
+        timeout,
         model_path,
         invert_enable,
         slave_id,
@@ -317,6 +294,7 @@ def tcp(
             device_type=sunspec.core.client.TCP,
             ipaddr=address,
             ipport=port,
+            timeout=timeout,
         )
 
     config.common(
