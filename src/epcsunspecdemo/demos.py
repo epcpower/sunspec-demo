@@ -1,7 +1,6 @@
 import time
 
 import click
-import serial.serialutil
 import sunspec.core.client
 
 import epcsunspecdemo.clishared
