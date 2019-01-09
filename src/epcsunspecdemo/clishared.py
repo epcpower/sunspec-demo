@@ -15,6 +15,7 @@ model_path_option = click.option(
 timeout_option = click.option(
     '--timeout',
     default=1,
+    type=float,
     help='Modbus communication timeout in seconds',
 )
 
