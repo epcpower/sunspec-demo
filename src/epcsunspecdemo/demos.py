@@ -208,13 +208,6 @@ slave_id_option = click.option(
     help='Node ID of the converter',
 )
 
-max_count_option = click.option(
-    '--max-count',
-    type=int,
-    default=100,
-    help='Maximum number of registers to be requested at once',
-)
-
 cycles_option = click.option(
     '--cycles',
     type=int,
@@ -232,7 +225,6 @@ cycles_option = click.option(
 @epcsunspecdemo.clishared.model_path_option
 @invert_enable_option
 @slave_id_option
-@max_count_option
 @cycles_option
 @click.pass_obj
 def serial(
@@ -242,14 +234,12 @@ def serial(
         model_path,
         invert_enable,
         slave_id,
-        max_count,
         baudrate,
         cycles,
 ):
     with epcsunspecdemo.utils.fresh_smdx_path(model_path):
         device = sunspec.core.client.SunSpecClientDevice(
             slave_id=slave_id,
-            max_count=max_count,
             device_type=sunspec.core.client.RTU,
             name=port,
             baudrate=baudrate,
@@ -272,7 +262,6 @@ def serial(
 @epcsunspecdemo.clishared.model_path_option
 @invert_enable_option
 @slave_id_option
-@max_count_option
 @cycles_option
 @click.pass_obj
 def tcp(
@@ -283,13 +272,11 @@ def tcp(
         model_path,
         invert_enable,
         slave_id,
-        max_count,
         cycles,
 ):
     with epcsunspecdemo.utils.fresh_smdx_path(model_path):
         device = sunspec.core.client.SunSpecClientDevice(
             slave_id=slave_id,
-            max_count=max_count,
             device_type=sunspec.core.client.TCP,
             ipaddr=address,
             ipport=port,
