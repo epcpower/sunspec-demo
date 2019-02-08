@@ -1,0 +1,6 @@
+attrs==18.2.0
+click==7
+gitignoreio==0.1.5
+
+-e git+https://github.com/altendky/pysunspec@7929d6c4c37419477ab316a0a3334f24bded934a#egg=pysunspec
+

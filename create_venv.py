@@ -3,6 +3,7 @@ from __future__ import print_function
 import argparse
 import errno
 import functools
+import glob
 import os
 import os.path
 import shlex
@@ -19,7 +20,12 @@ venv_path = os.path.join(project_root, 'venv')
 venv_common_bin = os.path.join(venv_path, 'Scripts')
 venv_python = os.path.join(venv_common_bin, 'python')
 
-lib_src = os.path.join(project_root, 'src', 'libs')
+os.environ['CUSTOM_COMPILE_COMMAND'] = 'python create_venv.py compile'
+os.environ['PIP_DISABLE_PIP_VERSION_CHECK'] = '1'
+# https://github.com/pypa/pip/issues/5200#issuecomment-380131668
+# The flag sets the internal parameter to `False`, so you need to supply a
+# false value to the environment variable
+os.environ['PIP_NO_WARN_SCRIPT_LOCATION'] = '0'
 
 requirements_stem = os.path.join(project_root, 'requirements')
 
@@ -63,18 +69,13 @@ def read_dot_env():
     return env
 
 
-custom_env = {
-    'PIP_SRC': lib_src,
-}
-
-
-def create():
+def create(only_pre=False):
     d = {
         'linux': linux_create,
         'win32': windows_create,
     }
 
-    dispatch(d)
+    dispatch(d, only_pre=only_pre)
 
 
 def common_create(
@@ -82,6 +83,7 @@ def common_create(
     venv_bin,
     requirements_platform,
     symlink,
+    only_pre,
 ):
     if os.path.exists(venv_path):
         raise ExitError(
@@ -89,20 +91,24 @@ def common_create(
             '    {} rm'.format(str(this))
         )
 
-    try:
-        os.mkdir(lib_src)
-    except OSError:
-        pass
 
     env = dict(os.environ)
     env.update(read_dot_env())
-    env.update(custom_env)
+    pip_src = env.get('PIP_SRC')
+    if pip_src is not None:
+        try:
+            os.makedirs(pip_src)
+        except OSError as e:
+            if e.errno == errno.EEXIST:
+                pass
+            else:
+                raise
 
     check_call(
         [
             python,
             '-m', 'venv',
-            '--prompt', os.path.join('pm', os.path.basename(venv_path)),
+            '--prompt', os.path.join('sunspec-demo', os.path.basename(venv_path)),
             venv_path,
         ],
         cwd=project_root,
@@ -112,65 +118,81 @@ def common_create(
     if symlink:
         os.symlink(venv_bin, venv_common_bin)
 
+    requirements_path = os.path.join(
+        requirements_stem,
+        'pre.{}.txt'.format(requirements_platform),
+    )
     check_call(
         [
             venv_python,
             '-m', 'pip',
             'install',
-            '--upgrade', 'pip',
+            '--requirement', requirements_path,
         ],
         cwd=project_root,
         env=env,
     )
 
-    install_requirements(
+    if only_pre:
+        return
+
+    sync_requirements(
         requirements_platform=requirements_platform,
     )
 
 
-def install_requirements(requirements_platform):
-    base = requirements_stem
+def sync_requirements(requirements_platform):
+    filename = 'base'
 
-    base += '.' + requirements_platform
-
-    to_install = [base]
+    filename = '{}.{}.txt'.format(filename, requirements_platform)
+    path = os.path.join(requirements_stem, filename)
 
     env = dict(os.environ)
     env.update(read_dot_env())
-    env.update(custom_env)
 
-    for requirements in to_install:
-        install_requirements_file(
-            python=venv_python,
-            env=env,
-            requirements=requirements,
-        )
+    sync_requirements_file(
+        env=env,
+        requirements=path,
+    )
 
 
-def install_requirements_file(python, env, requirements):
+    requirements_path = os.path.join(requirements_stem, 'local.txt')
     check_call(
         [
-            python,
+            venv_python,
             '-m', 'pip',
             'install',
-            '-r', requirements,
+            '--no-deps',
+            '--requirement', requirements_path,
         ],
         cwd=project_root,
         env=env,
     )
 
 
-def linux_create():
+def sync_requirements_file(env, requirements):
+    check_call(
+        [
+            os.path.join(venv_common_bin, 'pip-sync'),
+            requirements,
+        ],
+        cwd=project_root,
+        env=env,
+    )
+
+
+def linux_create(only_pre):
     venv_bin = os.path.join(venv_path, 'bin')
     common_create(
         python='python3.7',
         venv_bin=venv_bin,
         requirements_platform='linux',
         symlink=True,
+        only_pre=only_pre,
     )
 
 
-def windows_create():
+def windows_create(only_pre):
     python_path = check_output(
         [
             'py',
@@ -188,6 +210,7 @@ def windows_create():
         venv_bin=venv_common_bin,
         requirements_platform='windows',
         symlink=False,
+        only_pre=only_pre,
     )
 
 
@@ -200,6 +223,50 @@ def rm(ignore_missing):
 
         if not ignore_missing:
             raise ExitError('venv not found at: {}'.format(venv_path))
+
+
+def compile_dispatch():
+    d = {
+        'linux': functools.partial(
+            common_compile,
+            requirements_platform='linux',
+        ),
+        'win32': functools.partial(
+            common_compile,
+            requirements_platform='windows',
+        ),
+    }
+
+    dispatch(d)
+
+
+def common_compile(requirements_platform):
+    if not venv_existed():
+        create(only_pre=True)
+
+    in_paths = tuple(
+        os.path.join(requirements_stem, filename)
+        for filename in glob.glob(os.path.join(requirements_stem, '*.in'))
+    )
+
+    for in_path in in_paths:
+        out_path = '{}.{}.txt'.format(
+            os.path.splitext(in_path)[0],
+            requirements_platform,
+        )
+
+        check_call(
+            [
+                os.path.join(venv_common_bin, 'pip-compile'),
+                '--output-file', out_path,
+                in_path,
+            ],
+            cwd=project_root,
+        )
+
+
+def venv_existed():
+    return os.path.exists(venv_path)
 
 
 def ensure(quick):
@@ -218,12 +285,12 @@ def ensure(quick):
 
 
 def common_ensure(quick, requirements_platform):
-    existed = os.path.exists(venv_path)
+    existed = venv_existed()
 
     if not existed:
         create()
     elif not quick:
-        install_requirements(
+        sync_requirements(
             requirements_platform=requirements_platform,
         )
 
@@ -347,6 +414,11 @@ def main():
         help='Do not raise an error if no venv is present',
     )
     rm_parser.set_defaults(func=rm)
+    compile_parser = subparsers.add_parser(
+        'compile',
+        description='pip-compile the requirements .in files',
+    )
+    compile_parser.set_defaults(func=compile_dispatch)
 
     args = parser.parse_args()
 
