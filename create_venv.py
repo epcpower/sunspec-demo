@@ -69,16 +69,17 @@ def read_dot_env():
     return env
 
 
-def create(only_pre=False):
+def create(group, only_pre=False):
     d = {
         'linux': linux_create,
         'win32': windows_create,
     }
 
-    dispatch(d, only_pre=only_pre)
+    dispatch(d, group=group, only_pre=only_pre)
 
 
 def common_create(
+    group,
     python,
     venv_bin,
     requirements_platform,
@@ -137,12 +138,13 @@ def common_create(
         return
 
     sync_requirements(
+        group=group,
         requirements_platform=requirements_platform,
     )
 
 
-def sync_requirements(requirements_platform):
-    filename = 'base'
+def sync_requirements(group, requirements_platform):
+    filename = group
 
     filename = '{}.{}.txt'.format(filename, requirements_platform)
     path = os.path.join(requirements_stem, filename)
@@ -181,9 +183,10 @@ def sync_requirements_file(env, requirements):
     )
 
 
-def linux_create(only_pre):
+def linux_create(group, only_pre):
     venv_bin = os.path.join(venv_path, 'bin')
     common_create(
+        group=group,
         python='python3.7',
         venv_bin=venv_bin,
         requirements_platform='linux',
@@ -192,7 +195,7 @@ def linux_create(only_pre):
     )
 
 
-def windows_create(only_pre):
+def windows_create(group, only_pre):
     python_path = check_output(
         [
             'py',
@@ -206,6 +209,7 @@ def windows_create(only_pre):
     python_path = python_path.strip()
 
     common_create(
+        group=group,
         python=python_path,
         venv_bin=venv_common_bin,
         requirements_platform='windows',
@@ -269,7 +273,7 @@ def venv_existed():
     return os.path.exists(venv_path)
 
 
-def ensure(quick):
+def ensure(group, quick):
     d = {
         'linux': functools.partial(
             common_ensure,
@@ -281,20 +285,21 @@ def ensure(quick):
         ),
     }
 
-    dispatch(d, quick=quick)
+    dispatch(d, group=group, quick=quick)
 
 
-def common_ensure(quick, requirements_platform):
+def common_ensure(group, quick, requirements_platform):
     existed = venv_existed()
 
     if not existed:
-        create()
+        create(group=group)
     elif not quick:
         sync_requirements(
+            group=group,
             requirements_platform=requirements_platform,
         )
 
-    check()
+    check(group=group)
 
     if existed:
         print('venv already present and passes some basic checks')
@@ -306,7 +311,7 @@ def clean_path(path):
     return os.path.normpath(os.path.abspath(path))
 
 
-def check():
+def check(group):
     activate = os.path.join(venv_common_bin, 'activate')
     expected_name = 'VIRTUAL_ENV'
 
@@ -367,6 +372,17 @@ def check():
             raise
 
 
+def add_group_option(parser):
+    parser.add_argument(
+        '--group',
+        default='base',
+        help=(
+            'Select a specific requirements group'
+            ' (stem of a file in requirements/)'
+        ),
+    )
+
+
 def dispatch(d, *args, **kwargs):
     for name, f in d.items():
         if sys.platform.startswith(name):
@@ -391,12 +407,14 @@ def main():
         'create',
         description='Create the venv',
     )
+    add_group_option(create_parser)
     create_parser.set_defaults(func=create)
 
     ensure_parser = subparsers.add_parser(
         'ensure',
         description='Create the venv if not already present',
     )
+    add_group_option(ensure_parser)
     ensure_parser.add_argument(
         '--quick',
         action='store_true',
