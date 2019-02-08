@@ -201,13 +201,6 @@ invert_enable_option = click.option(
     help='Invert the converters hardware enable input',
 )
 
-slave_id_option = click.option(
-    '--slave-id',
-    type=int,
-    default=1,
-    help='Node ID of the converter',
-)
-
 cycles_option = click.option(
     '--cycles',
     type=int,
@@ -224,7 +217,7 @@ cycles_option = click.option(
 @epcsunspecdemo.clishared.timeout_option
 @epcsunspecdemo.clishared.model_path_option
 @invert_enable_option
-@slave_id_option
+@epcsunspecdemo.clishared.slave_id_option
 @cycles_option
 @click.pass_obj
 def serial(
@@ -261,7 +254,7 @@ def serial(
 @epcsunspecdemo.clishared.timeout_option
 @epcsunspecdemo.clishared.model_path_option
 @invert_enable_option
-@slave_id_option
+@epcsunspecdemo.clishared.slave_id_option
 @cycles_option
 @click.pass_obj
 def tcp(

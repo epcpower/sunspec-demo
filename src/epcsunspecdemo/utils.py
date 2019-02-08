@@ -5,6 +5,16 @@ import attr
 import sunspec.core.device
 
 
+def apply_decorators(decorators):
+    def decorator(f):
+        for decorator in reversed(decorators):
+            f = decorator(f)
+
+        return f
+
+    return decorator
+
+
 def click_show_default_true():
     # https://github.com/pallets/click/issues/646#issuecomment-435317967
 
