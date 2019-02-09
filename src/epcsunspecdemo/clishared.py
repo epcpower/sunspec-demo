@@ -86,6 +86,15 @@ point_names_option = click.option(
 )
 
 
+point_names_and_values_option = click.option(
+    '--point-name',
+    'point_names_and_values',
+    nargs=2,
+    multiple=True,
+    help='The name of the point and the value',
+)
+
+
 @attr.s
 class RtuDeviceFactory:
     port = attr.ib()

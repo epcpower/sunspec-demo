@@ -10,6 +10,7 @@ import epcsunspecdemo.demos
 import epcsunspecdemo.models
 import epcsunspecdemo.read
 import epcsunspecdemo.scan
+import epcsunspecdemo.write
 
 
 @attr.s
@@ -27,6 +28,7 @@ epcsunspecdemo.demos.add_commands(group=cli)
 cli.add_command(epcsunspecdemo.models.get_models)
 cli.add_command(epcsunspecdemo.scan.cli, name='scan')
 cli.add_command(epcsunspecdemo.read.group)
+cli.add_command(epcsunspecdemo.write.group)
 
 
 @cli.command(
