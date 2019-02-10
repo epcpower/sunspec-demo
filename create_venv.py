@@ -254,17 +254,24 @@ def common_compile(requirements_platform, configuration):
     )
 
     for in_path in in_paths:
+        stem = os.path.splitext(in_path)[0]
+        group = os.path.basename(stem)
+
         out_path = '{}.{}.txt'.format(
-            os.path.splitext(in_path)[0],
+            stem,
             requirements_platform,
         )
+
+        extras = []
+        if group == configuration.pre_group:
+            extras.append('--allow-unsafe')
 
         check_call(
             [
                 os.path.join(configuration.venv_common_bin, 'pip-compile'),
                 '--output-file', out_path,
                 in_path,
-            ],
+            ] + extras,
             cwd=configuration.project_root,
         )
 
