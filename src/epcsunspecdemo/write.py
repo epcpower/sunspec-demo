@@ -28,7 +28,12 @@ converters = {
 }
 
 
-def common(device_factory, model_name, point_names_and_values):
+def common(
+        device_factory,
+        model_name,
+        point_names_and_values,
+        repeating_point_names_and_values,
+):
     device = device_factory()
     model = device[model_name]
 
@@ -43,19 +48,28 @@ def common(device_factory, model_name, point_names_and_values):
 
     model.read()
 
-    for point_name, value in point_names_and_values:
-        sunspec_point_type = model.model.points[point_name].point_type.type
+    all_points = [
+        (0, name, value)
+        for name, value in point_names_and_values
+    ]
+    all_points.extend(repeating_point_names_and_values)
+
+    for block_index, point_name, value in all_points:
+        client_point = model.model.blocks[block_index].points[point_name]
+        sunspec_point_type = client_point.point_type.type
+
         converter = converters.get(sunspec_point_type)
 
         if converter is None:
             raise Exception()
         else:
-            setattr(model, point_name, converter(value))
-            model.model.points[point_name].write()
+            client_point.value = converter(value)
+            client_point.write()
 
 
 commands = epcsunspecdemo.clishared.Commands.build(
     options=(
+        epcsunspecdemo.clishared.repeating_point_names_and_values_option,
         epcsunspecdemo.clishared.model_name_option,
         epcsunspecdemo.clishared.point_names_and_values_option,
     ),

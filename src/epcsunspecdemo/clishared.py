@@ -87,9 +87,20 @@ point_names_option = click.option(
 
 
 point_names_and_values_option = click.option(
-    '--point-name',
+    '--point',
     'point_names_and_values',
     nargs=2,
+    type=(str, str),
+    multiple=True,
+    help='The name of the point and the value',
+)
+
+
+repeating_point_names_and_values_option = click.option(
+    '--repeating-point',
+    'repeating_point_names_and_values',
+    nargs=3,
+    type=(int, str, str),
     multiple=True,
     help='The name of the point and the value',
 )
