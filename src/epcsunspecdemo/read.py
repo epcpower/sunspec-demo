@@ -31,10 +31,23 @@ def common(device_factory, model_name, point_names):
     show_all = len(point_names) == 0
 
     if show_all:
-        point_names = model.points
+        points = {}
+        points.update(model.model.points)
+        points.update(model.model.points_sf)
+    else:
+        points = {
+            point_name: model.model.points.get(
+                point_name,
+                model.model.points_sf.get(point_name),
+            )
+            for point_name in point_names
+        }
 
-    for point_name in point_names:
-        click.echo('{}: {}'.format(point_name, model[point_name]))
+    for point_name, point in points.items():
+        click.echo('{}: {}'.format(
+            point_name,
+            point.value,
+        ))
 
     if show_all:
         for index, block in enumerate(model.repeating):
@@ -45,7 +58,8 @@ def common(device_factory, model_name, point_names):
             click.echo('Repetition: {}'.format(index))
 
             for point_name in block.points:
-                click.echo('    {}: {}'.format(point_name, block[point_name]))
+                point = block.block.points[point_name]
+                click.echo('    {}: {}'.format(point_name, point.value))
 
 
 commands = epcsunspecdemo.clishared.Commands.build(
