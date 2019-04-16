@@ -1,3 +1,4 @@
+import decimal
 import sys
 
 import click
@@ -14,10 +15,10 @@ def group():
 
 
 converters = {
-    'int16': int,
-    'uint16': int,
-    'int32': int,
-    'uint32': int,
+    'int16': decimal.Decimal,
+    'uint16': decimal.Decimal,
+    'int32': decimal.Decimal,
+    'uint32': decimal.Decimal,
     'sunssf': None,
     'enum16': None,
     'bitfield32': None,
