@@ -11,6 +11,7 @@ import epcsunspecdemo.models
 import epcsunspecdemo.read
 import epcsunspecdemo.scan
 import epcsunspecdemo.write
+import epcsunspecdemo.datalogger
 
 
 @attr.s
@@ -29,6 +30,7 @@ cli.add_command(epcsunspecdemo.models.get_models)
 cli.add_command(epcsunspecdemo.scan.cli, name='scan')
 cli.add_command(epcsunspecdemo.read.group)
 cli.add_command(epcsunspecdemo.write.group)
+cli.add_command(epcsunspecdemo.datalogger.group)
 
 
 @cli.command(

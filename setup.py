@@ -18,6 +18,8 @@ setuptools.setup(
         'attrs',
         'click',
         'pysunspec',
+        'toolz',
+        'tqdm',
     ],
     extras_require={
         'development': [
