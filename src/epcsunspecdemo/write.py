@@ -20,7 +20,7 @@ converters = {
     'int32': decimal.Decimal,
     'uint32': decimal.Decimal,
     'sunssf': None,
-    'enum16': None,
+    'enum16': decimal.Decimal,
     'bitfield32': None,
     'string': str,
     'acc16': None,
