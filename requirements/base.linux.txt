@@ -4,7 +4,7 @@
 #
 #    python create_venv.py compile
 #
--e git+https://github.com/altendky/pysunspec@7929d6c4c37419477ab316a0a3334f24bded934a#egg=pysunspec
+-e git+https://github.com/altendky/pysunspec@3662dd0a7d6810652320284ac4256beee5b20f2d#egg=pysunspec
 attrs==18.2.0
 certifi==2018.11.29       # via requests
 chardet==3.0.4            # via requests
