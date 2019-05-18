@@ -28,8 +28,8 @@ def gridtied_demo(device, invert_enable, cycles):
     device.common.read()
     print(device.common)
 
-    device.model_17.read()
-    print(device.model_17)
+    device.serial.read()
+    print(device.serial)
 
     # Set Mobus as control source 0=CAN 1=Modbus
     device.epc_control.read()
