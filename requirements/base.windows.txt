@@ -13,10 +13,12 @@ gitignoreio==0.1.5
 idna==2.8                 # via requests
 pip-tools==3.3.2
 pyserial==3.4
-requests==2.21.0          # via gitignoreio, romp
+requests==2.22.0          # via gitignoreio, romp
 romp==2019.4.1
 six==1.12.0               # via pip-tools
-urllib3==1.24.2           # via requests
+toolz==0.9.0
+tqdm==4.32.1
+urllib3==1.25.2           # via requests
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
