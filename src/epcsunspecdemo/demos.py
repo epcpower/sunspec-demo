@@ -7,17 +7,6 @@ import epcsunspecdemo.clishared
 import epcsunspecdemo.utils
 
 
-def update_cmd_bits(cmd_bits, device):
-    device.epc_control.CmdBits = cmd_bits.to_int()
-    print('{}: {}'.format(device.epc_control.CmdBits, cmd_bits.active()))
-    device.epc_control.model.points['CmdBits'].write()
-    device.epc_control.read()
-    print(device.epc_control)
-    time.sleep(0.5)
-    device.inverter.read()
-    print(device.inverter.StVnd)
-
-
 def gridtied_demo(device, invert_enable, cycles):
     cmd_bits = epcsunspecdemo.utils.Flags(
         model=device.epc_control,
@@ -41,19 +30,19 @@ def gridtied_demo(device, invert_enable, cycles):
     cmd_bits.clear_all()
 
     if invert_enable:
-        cmd_bits.set('InvertHwEnable')
+        device.epc_control.CmdBits = cmd_bits.set('InvertHwEnable')
     else:
-        cmd_bits.clear('InvertHwEnable')
+        device.epc_control.CmdBits = cmd_bits.clear('InvertHwEnable')
 
-    update_cmd_bits(cmd_bits=cmd_bits, device=device)
+    device.epc_control.model.points['CmdBits'].write()
 
     # clear faults
-    cmd_bits.set('FltClr')
-    update_cmd_bits(cmd_bits=cmd_bits, device=device)
+    device.epc_control.CmdBits = cmd_bits.set('FltClr')
+    device.epc_control.model.points['CmdBits'].write()
 
     # remove fault clear command
-    cmd_bits.clear('FltClr')
-    update_cmd_bits(cmd_bits=cmd_bits, device=device)
+    device.epc_control.CmdBits = cmd_bits.clear('FltClr')
+    device.epc_control.model.points['CmdBits'].write()
 
     device.epc_control.CmdV = 480
     device.epc_control.CmdHz = 60
@@ -63,8 +52,7 @@ def gridtied_demo(device, invert_enable, cycles):
     try:
         for _ in range(cycles):
             # enable and run
-            cmd_bits.set('En')
-            device.epc_control.CmdBits = cmd_bits.to_int()
+            device.epc_control.CmdBits = cmd_bits.set('En')
             print('{}: {}'.format(device.epc_control.CmdBits, cmd_bits.active()))
             device.epc_control.CmdRealPwr = 10000  # 10kW
             device.epc_control.CmdReactivePwr = 5000  # 5kVA
@@ -78,8 +66,8 @@ def gridtied_demo(device, invert_enable, cycles):
             time.sleep(0.5)
     finally:
         # remove run command
-        cmd_bits.clear('En')
-        update_cmd_bits(cmd_bits=cmd_bits, device=device)
+        device.epc_control.CmdBits = cmd_bits.clear('En')
+        device.epc_control.model.points['CmdBits'].write()
 
         # return control to CAN:
         device.epc_control.CtlSrc = 0
@@ -124,19 +112,19 @@ def dcdc_demo(device, invert_enable, cycles):
     cmd_bits.clear_all()
 
     if invert_enable:
-        cmd_bits.set('InvertHwEnable')
+        device.epc_control.CmdBits = cmd_bits.set('InvertHwEnable')
     else:
-        cmd_bits.clear('InvertHwEnable')
+        device.epc_control.CmdBits = cmd_bits.clear('InvertHwEnable')
 
-    update_cmd_bits(cmd_bits=cmd_bits, device=device)
+    device.epc_control.model.points['CtlSrc'].write()
 
     # clear faults
-    cmd_bits.set('FltClr')
-    update_cmd_bits(cmd_bits=cmd_bits, device=device)
+    device.epc_control.CmdBits = cmd_bits.set('FltClr')
+    device.epc_control.model.points['CtlSrc'].write()
 
     # remove fault clear command
-    cmd_bits.clear('FltClr')
-    update_cmd_bits(cmd_bits=cmd_bits, device=device)
+    device.epc_control.CmdBits = cmd_bits.clear('FltClr')
+    device.epc_control.model.points['CtlSrc'].write()
 
     status_bits.from_int(device.epc_control.Evt1)
     fault_bits.from_int(device.epc_control.FaultFlags)
@@ -151,8 +139,7 @@ def dcdc_demo(device, invert_enable, cycles):
     try:
         for _ in range(cycles):
             # enable and run
-            cmd_bits.set('En')
-            device.epc_control.CmdBits = cmd_bits.to_int()
+            device.epc_control.CmdBits = cmd_bits.set('En')
             # print('{}: {}'.format(device.epc_control.CmdBits, cmd_bits.active()))
             device.epc_control.model.points['CmdBits'].write()
             device.epc_control.model.points['CmdVout'].write()
@@ -170,8 +157,8 @@ def dcdc_demo(device, invert_enable, cycles):
             # time.sleep(0.5)
     finally:
         # remove run command
-        cmd_bits.clear('En')
-        update_cmd_bits(cmd_bits=cmd_bits, device=device)
+        device.epc_control.CmdBits = cmd_bits.clear('En')
+        device.epc_control.model.points['CtlSrc'].write()
 
         # return control to CAN:
         device.epc_control.CtlSrc = 0

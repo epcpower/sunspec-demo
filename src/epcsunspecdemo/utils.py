@@ -74,11 +74,13 @@ class Flags(object):
         self._validate_names(*names)
         for name in names:
             self._names.add(name)
+        return self.to_int()
 
     def clear(self, *names):
         self._validate_names(*names)
         for name in names:
             self._names.discard(name)
+        return self.to_int()
 
     def to_int(self):
         return sum(1 << int(s.value) for s in self._symbols
@@ -86,9 +88,11 @@ class Flags(object):
 
     def set_all(self):
         self._names = set(self._valid_names)
+        return self.to_int()
 
     def clear_all(self):
         self._names = set()
+        return self.to_int()
 
     def from_int(self, source):
         s = '{:b}'.format(source)
