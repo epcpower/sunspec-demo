@@ -12,12 +12,7 @@ def send_val(point, val):
     point.write()
 
 
-def gridtied_demo(device, invert_enable, cycles):
-    cmd_bits = epcsunspecdemo.utils.Flags(
-        model=device.epc_control,
-        point='CmdBits',
-    )
-    cmd_point = device.epc_control.model.points['CmdBits']
+def demo(device, cmd_flags, ctl_src, refs, model, cycles):
     # Read common model
     device.common.read()
     print(device.common)
@@ -25,125 +20,95 @@ def gridtied_demo(device, invert_enable, cycles):
     device.serial.read()
     print(device.serial)
 
-    device.epc_control.read()
-    print(device.epc_control)
-    # Set Mobus as control source 0=CAN 1=Modbus
-    send_val(device.epc_control.model.points['CtlSrc'], 1)
+    model.read()
+    print(model)
+    # Set control source, if defined
+    if ctl_src is not None:
+        send_val(ctl_src, 1)
 
     # stop
-    cmd_bits.clear_all()
-
-    if invert_enable:
-        val = cmd_bits.set('InvertHwEnable')
-
-    send_val(cmd_point, val)
+    cmd_flags['flags'].clear_all()
+    if cmd_flags['invert_enable']:
+        val = cmd_flags['flags'].set(cmd_flags['invert_enable'])
+    send_val(cmd_flags['point'], val)
     # clear faults
-    send_val(cmd_point, cmd_bits.set('FltClr'))
+    send_val(cmd_flags['point'], cmd_flags['flags'].set(cmd_flags['fault_clear']))
     # remove fault clear command
-    send_val(cmd_point, cmd_bits.clear('FltClr'))
+    send_val(cmd_flags['point'], cmd_flags['flags'].clear(cmd_flags['fault_clear']))
 
-    send_val(device.epc_control.model.points['CmdV'], 480)
-    send_val(device.epc_control.model.points['CmdHz'], 60)
+    for ref in refs:
+        send_val(*ref)
 
     try:
         for _ in range(cycles):
             # enable and run
-            val = cmd_bits.set('En')
-            send_val(cmd_point, val)
-            print('{}: {}'.format(val, cmd_bits.active()))
-            send_val(device.epc_control.model.points['CmdRealPwr'], 10000) #10kW
-            send_val(device.epc_control.model.points['CmdReactivePwr'], 5000) #5kVA
+            val = cmd_flags['flags'].set(cmd_flags['enable'])
+            send_val(cmd_flags['point'], val)
+            print('{}: {}'.format(val, cmd_flags['flags'].active()))
 
-            device.epc_control.read()
-            print(device.epc_control)
+            model.read()
+            print(model)
 
             time.sleep(0.5)
     finally:
         # remove run command
-        send_val(cmd_point, cmd_bits.clear('En'))
-        # return control to CAN:
-        send_val(device.epc_control.model.points['CtlSrc'], 0)
+        send_val(cmd_flags['point'], cmd_flags['flags'].clear(cmd_flags['enable']))
+        # clear control source, if defined
+        if ctl_src is not None:
+            send_val(ctl_src, 0)
 
         print("controlset")
+
+
+def gridtied_demo(device, invert_enable, cycles):
+    cmd_flags = {
+        'point': device.epc_control.model.points['CmdBits'],
+        'flags': epcsunspecdemo.utils.Flags(
+            model=device.epc_control,
+            point='CmdBits',
+        ),
+        'enable': 'En',
+        'fault_clear': 'FltClr',
+        'invert_enable': 'InvertHwEnable',
+    }
+
+    refs =  [
+        (device.epc_control.model.points['CmdV'], 480),
+        (device.epc_control.model.points['CmdHz'], 60),
+        (device.epc_control.model.points['CmdRealPwr'], 10000), #10kW
+        (device.epc_control.model.points['CmdReactivePwr'], 5000), #5kVA
+    ]
+
+    demo(
+        device=device,
+        cmd_flags=cmd_flags,
+        ctl_src=device.epc_control.model.points['CtlSrc'],
+        refs=refs,
+        model=device.epc_control,
+        cycles=cycles,
+    )
 
 
 def dcdc_demo(device, invert_enable, cycles):
-    cmd_bits = epcsunspecdemo.utils.Flags(
+    cmd_flags = {
+        'point': device.epc_control.model.points['CmdBits'],
+        'flags': epcsunspecdemo.utils.Flags(
+            model=device.epc_control,
+            point='CmdBits',
+        ),
+        'enable': 'En',
+        'fault_clear': 'FltClr',
+        'invert_enable': 'InvertHwEnable',
+    }
+
+    demo(
+        device=device,
+        cmd_flags=cmd_flags,
+        ctl_src=device.epc_control.model.points['CtlSrc'],
+        refs=[(device.epc_control.model.points['CmdVout'], 800)],
         model=device.epc_control,
-        point='CmdBits',
+        cycles=cycles,
     )
-    status_bits = epcsunspecdemo.utils.Flags(
-        model=device.epc_control,
-        point='Evt1',
-    )
-    fault_bits = epcsunspecdemo.utils.Flags(
-        model=device.epc_control,
-        point='FaultFlags',
-    )
-    warning_bits = epcsunspecdemo.utils.Flags(
-        model=device.epc_control,
-        point='WrnFlgs',
-    )
-    cmd_point = device.epc_control.model.points['CmdBits']
-
-    # Read common model
-    device.common.read()
-    print(device.common)
-
-    print(device.models)
-
-    device.epc_control.read()
-    print(device.epc_control)
-    fault_bits.from_int(device.epc_control.FaultFlags)
-    print('Faults: ' + str(fault_bits.active()))
-    # Set Mobus as control source 0=CAN 1=Modbus
-    send_val(device.epc_control.model.points['CtlSrc'], 1)
-
-    # stop
-    cmd_bits.clear_all()
-
-    if invert_enable:
-        val = cmd_bits.set('InvertHwEnable')
-
-    send_val(cmd_point, val)
-    # clear faults
-    send_val(cmd_point, cmd_bits.set('FltClr'))
-    # remove fault clear command
-    send_val(cmd_point, cmd_bits.clear('FltClr'))
-
-    status_bits.from_int(device.epc_control.Evt1)
-    fault_bits.from_int(device.epc_control.FaultFlags)
-    warning_bits.from_int(device.epc_control.WrnFlgs)
-
-    print('Cmd bits: ' + str(cmd_bits.active()))
-    print('Evt1: ' + str(status_bits.active()))
-    print('Faults: ' + str(fault_bits.active()))
-    print('Warnings: ' + str(warning_bits.active()))
-
-    try:
-        for _ in range(cycles):
-            # enable and run
-            send_val(cmd_point, cmd_bits.set('En'))
-            send_val(device.epc_control.model.points['CmdVout'], 800)
-
-            device.epc_control.read()
-            status_bits.from_int(device.epc_control.Evt1)
-            fault_bits.from_int(device.epc_control.FaultFlags)
-            warning_bits.from_int(device.epc_control.WrnFlgs)
-            print('State: ' + str(device.epc_control.St))
-            print('Evt1: ' + str(status_bits.active()))
-            print('Faults: ' + str(fault_bits.active()))
-            print('Warnings: ' + str(warning_bits.active()))
-            # print(device.epc_control)
-
-            # time.sleep(0.5)
-    finally:
-        # remove run command
-        send_val(cmd_point, cmd_bits.clear('En'))
-        # return control to CAN:
-        send_val(device.epc_control.model.points['CtlSrc'], 0)
-
-        print("controlset")
 
 
 @click.group(
