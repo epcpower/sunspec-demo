@@ -27,7 +27,7 @@ def demo(device, cmd_flags, ctl_src, refs, model, cycles):
         send_val(ctl_src, 1)
 
     # stop
-    cmd_flags['flags'].clear_all()
+    val = cmd_flags['flags'].clear_all()
     if cmd_flags['invert_enable']:
         val = cmd_flags['flags'].set(cmd_flags['invert_enable'])
     send_val(cmd_flags['point'], val)
@@ -111,6 +111,35 @@ def dcdc_demo(device, invert_enable, cycles):
     )
 
 
+def abb_demo(device, invert_enable, cycles):
+    cmd_flags = {
+        'point': device.abb_control.model.points['ABBCmdBits'],
+        'flags': epcsunspecdemo.utils.Flags(
+            model=device.abb_control,
+            point='ABBCmdBits',
+        ),
+        'enable': 'Enable',
+        'fault_clear': 'FaultReset',
+        'invert_enable': None,
+    }
+
+    refs =  [
+        (device.abb_control.model.points['ABBCmdV'], 480),
+        (device.abb_control.model.points['ABBCmdHz'], 60),
+        (device.abb_control.model.points['ABBCmdRealPower'], 10000), #10kW
+        (device.abb_control.model.points['ABBCmdReactivePower'], 5000), #5kVA
+    ]
+
+    demo(
+        device=device,
+        cmd_flags=cmd_flags,
+        ctl_src=None,
+        refs=refs,
+        model=device.abb_control,
+        cycles=cycles,
+    )
+
+
 @click.group(
     help='Demo connection to a grid-tied converter',
 )
@@ -125,6 +154,14 @@ def gridtied(config):
 @click.pass_obj
 def dcdc(config):
     config.common = dcdc_demo
+
+
+@click.group(
+    help='Demo connection to an ABB converter',
+)
+@click.pass_obj
+def abb(config):
+    config.common = abb_demo
 
 
 invert_enable_option = click.option(
@@ -217,7 +254,8 @@ def tcp(
 def add_commands(group):
     group.add_command(gridtied, name='gridtied')
     group.add_command(dcdc, name='dcdc')
+    group.add_command(abb, name='abb')
 
-    for group in (gridtied, dcdc):
+    for group in (gridtied, dcdc, abb):
         group.add_command(serial)
         group.add_command(tcp)
