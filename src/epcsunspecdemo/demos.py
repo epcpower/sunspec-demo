@@ -12,7 +12,27 @@ def send_val(point, val):
     point.write()
 
 
-def demo(device, cmd_flags, ctl_src, refs, model, cycles):
+def clear_faults(cmd_flags, state, faulted_value):
+    model = state.block.model
+    model.read_points()
+    s = state.value_getter()
+    print(f'Inverter State: {s}')
+    tries = 0
+    while s == faulted_value:
+        # clear faults
+        send_val(cmd_flags['point'], cmd_flags['flags'].set(cmd_flags['fault_clear']))
+        time.sleep(0.5)
+        model.read_points()
+        s = state.value_getter()
+        print(f'Inverter State: {s}')
+        tries += 1
+        if tries > 10:
+            raise Exception('Unable to clear faults!')
+    # remove fault clear command
+    send_val(cmd_flags['point'], cmd_flags['flags'].clear(cmd_flags['fault_clear']))
+
+
+def demo(device, cmd_flags, ctl_src, refs, model, state, faulted_value, cycles):
     # Read common model
     device.common.read()
     print(device.common)
@@ -31,10 +51,8 @@ def demo(device, cmd_flags, ctl_src, refs, model, cycles):
     if cmd_flags['invert_enable']:
         val = cmd_flags['flags'].set(cmd_flags['invert_enable'])
     send_val(cmd_flags['point'], val)
-    # clear faults
-    send_val(cmd_flags['point'], cmd_flags['flags'].set(cmd_flags['fault_clear']))
-    # remove fault clear command
-    send_val(cmd_flags['point'], cmd_flags['flags'].clear(cmd_flags['fault_clear']))
+
+    clear_faults(cmd_flags=cmd_flags, state=state, faulted_value=faulted_value)
 
     for ref in refs:
         send_val(*ref)
@@ -85,6 +103,8 @@ def gridtied_demo(device, invert_enable, cycles):
         ctl_src=device.epc_control.model.points['CtlSrc'],
         refs=refs,
         model=device.epc_control,
+        state=device.inverter.model.points['StVnd'],
+        faulted_value=3,
         cycles=cycles,
     )
 
@@ -107,6 +127,8 @@ def dcdc_demo(device, invert_enable, cycles):
         ctl_src=device.epc_control.model.points['CtlSrc'],
         refs=[(device.epc_control.model.points['CmdVout'], 800)],
         model=device.epc_control,
+        state=device.epc_control.model.points['St'],
+        faulted_value=3,
         cycles=cycles,
     )
 
@@ -136,6 +158,8 @@ def abb_demo(device, invert_enable, cycles):
         ctl_src=None,
         refs=refs,
         model=device.abb_control,
+        state=device.inverter.model.points['ABBActiveState'],
+        faulted_value=3, #probably wrong
         cycles=cycles,
     )
 
