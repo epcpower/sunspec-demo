@@ -37,8 +37,8 @@ def demo(device, cmd_flags, ctl_src, refs, model, state, faulted_value, cycles):
     device.common.read()
     print(device.common)
 
-    device.serial.read()
-    print(device.serial)
+    device.model_17.read()
+    print(device.model_17)
 
     model.read()
     print(model)
