@@ -16,19 +16,20 @@ def send_val(point, val):
 def clear_faults(config):
     model = config.state.block.model
     model.read_points()
-    s = config.state.value_getter()
-    print(f'Inverter State: {s}')
-    tries = 0
-    while s == config.faulted_value:
+    state_value = config.state.value_getter()
+    print(f'Inverter State: {state_value}')
+
+    for attempt in range(10):
         # clear faults
         send_val(config.cmd_point, config.cmd_flags.set(config.fault_clear))
         time.sleep(0.5)
         model.read_points()
-        s = config.state.value_getter()
-        print(f'Inverter State: {s}')
-        tries += 1
-        if tries > 10:
-            raise Exception('Unable to clear faults!')
+        state_value = config.state.value_getter()
+        print(f'Inverter State: {state_value}')
+        if state_value != config.faulted_value:
+            break
+    else:
+        raise Exception('Unable to clear faults!')
     # remove fault clear command
     send_val(config.cmd_point, config.cmd_flags.clear(config.fault_clear))
 
