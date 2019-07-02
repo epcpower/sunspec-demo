@@ -94,7 +94,7 @@ def gridtied_demo(device, invert_enable, cycles):
         ),
         enable='En',
         fault_clear='FltClr',
-        invert_enable='InvertHwEnable',
+        invert_enable='InvertHwEnable' if invert_enable else None,
         references=refs,
         ctl_src=device.epc_control.model.points['CtlSrc'],
         model=device.epc_control,
@@ -114,7 +114,7 @@ def dcdc_demo(device, invert_enable, cycles):
         ),
         enable='En',
         fault_clear='FltClr',
-        invert_enable='InvertHwEnable',
+        invert_enable='InvertHwEnable' if invert_enable else None,
         references=[
             References(
                 point=device.epc_control.model.points['CmdVout'],
