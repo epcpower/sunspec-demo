@@ -1,5 +1,6 @@
 import time
 
+import attr
 import click
 import sunspec.core.client
 
@@ -12,27 +13,27 @@ def send_val(point, val):
     point.write()
 
 
-def clear_faults(cmd_flags, state, faulted_value):
-    model = state.block.model
+def clear_faults(config):
+    model = config.state.block.model
     model.read_points()
-    s = state.value_getter()
+    s = config.state.value_getter()
     print(f'Inverter State: {s}')
     tries = 0
-    while s == faulted_value:
+    while s == config.faulted_value:
         # clear faults
-        send_val(cmd_flags['point'], cmd_flags['flags'].set(cmd_flags['fault_clear']))
+        send_val(config.cmd_point, config.cmd_flags.set(config.fault_clear))
         time.sleep(0.5)
         model.read_points()
-        s = state.value_getter()
+        s = config.state.value_getter()
         print(f'Inverter State: {s}')
         tries += 1
         if tries > 10:
             raise Exception('Unable to clear faults!')
     # remove fault clear command
-    send_val(cmd_flags['point'], cmd_flags['flags'].clear(cmd_flags['fault_clear']))
+    send_val(config.cmd_point, config.cmd_flags.clear(config.fault_clear))
 
 
-def demo(device, cmd_flags, ctl_src, refs, model, state, faulted_value, cycles):
+def demo(device, config, cycles):
     # Read common model
     device.common.read()
     print(device.common)
@@ -40,128 +41,120 @@ def demo(device, cmd_flags, ctl_src, refs, model, state, faulted_value, cycles):
     device.model_17.read()
     print(device.model_17)
 
-    model.read()
-    print(model)
+    config.model.read()
+    print(config.model)
     # Set control source, if defined
-    if ctl_src is not None:
-        send_val(ctl_src, 1)
+    if config.ctl_src is not None:
+        send_val(config.ctl_src, 1)
 
     # stop
-    val = cmd_flags['flags'].clear_all()
-    if cmd_flags['invert_enable']:
-        val = cmd_flags['flags'].set(cmd_flags['invert_enable'])
-    send_val(cmd_flags['point'], val)
+    value = config.cmd_flags.clear_all()
+    if config.invert_enable:
+        value = config.cmd_flags.set(config.invert_enable)
+    send_val(config.cmd_point, value)
 
-    clear_faults(cmd_flags=cmd_flags, state=state, faulted_value=faulted_value)
+    clear_faults(config=config)
 
-    for ref in refs:
-        send_val(*ref)
+    for ref in config.references:
+        send_val(ref.point, ref.value)
 
     try:
         for _ in range(cycles):
             # enable and run
-            val = cmd_flags['flags'].set(cmd_flags['enable'])
-            send_val(cmd_flags['point'], val)
-            print('{}: {}'.format(val, cmd_flags['flags'].active()))
+            value = config.cmd_flags.set(config.enable)
+            send_val(config.cmd_point, value)
+            print('{}: {}'.format(value, config.cmd_flags.active()))
 
-            model.read()
-            print(model)
+            config.model.read()
+            print(config.model)
 
             time.sleep(0.5)
     finally:
         # remove run command
-        send_val(cmd_flags['point'], cmd_flags['flags'].clear(cmd_flags['enable']))
+        send_val(config.cmd_point, config.cmd_flags.clear(config.enable))
         # clear control source, if defined
-        if ctl_src is not None:
-            send_val(ctl_src, 0)
+        if config.ctl_src is not None:
+            send_val(config.ctl_src, 0)
 
         print("controlset")
 
-
 def gridtied_demo(device, invert_enable, cycles):
-    cmd_flags = {
-        'point': device.epc_control.model.points['CmdBits'],
-        'flags': epcsunspecdemo.utils.Flags(
+    points = device.epc_control.model.points
+    refs =  [
+        Reference(point=points['CmdV'], value=480),
+        Reference(point=points['CmdHz'], value=60),
+        Reference(point=points['CmdRealPwr'], value=10000), #10kW
+        Reference(point=points['CmdReactivePwr'], value=5000), #5kVA
+    ]
+    config = DeviceConfig(
+        cmd_point=device.epc_control.model.points['CmdBits'],
+        cmd_flags=epcsunspecdemo.utils.Flags(
             model=device.epc_control,
             point='CmdBits',
         ),
-        'enable': 'En',
-        'fault_clear': 'FltClr',
-        'invert_enable': 'InvertHwEnable',
-    }
-
-    refs =  [
-        (device.epc_control.model.points['CmdV'], 480),
-        (device.epc_control.model.points['CmdHz'], 60),
-        (device.epc_control.model.points['CmdRealPwr'], 10000), #10kW
-        (device.epc_control.model.points['CmdReactivePwr'], 5000), #5kVA
-    ]
-
-    demo(
-        device=device,
-        cmd_flags=cmd_flags,
+        enable='En',
+        fault_clear='FltClr',
+        invert_enable='InvertHwEnable',
+        references=refs,
         ctl_src=device.epc_control.model.points['CtlSrc'],
-        refs=refs,
         model=device.epc_control,
         state=device.inverter.model.points['StVnd'],
         faulted_value=3,
-        cycles=cycles,
     )
+
+    demo(device=device, config=config, cycles=cycles)
 
 
 def dcdc_demo(device, invert_enable, cycles):
-    cmd_flags = {
-        'point': device.epc_control.model.points['CmdBits'],
-        'flags': epcsunspecdemo.utils.Flags(
+    config = DeviceConfig(
+        cmd_point=device.epc_control.model.points['CmdBits'],
+        cmd_flags=epcsunspecdemo.utils.Flags(
             model=device.epc_control,
             point='CmdBits',
         ),
-        'enable': 'En',
-        'fault_clear': 'FltClr',
-        'invert_enable': 'InvertHwEnable',
-    }
-
-    demo(
-        device=device,
-        cmd_flags=cmd_flags,
+        enable='En',
+        fault_clear='FltClr',
+        invert_enable='InvertHwEnable',
+        references=[
+            References(
+                point=device.epc_control.model.points['CmdVout'],
+                value=800
+            )
+        ],
         ctl_src=device.epc_control.model.points['CtlSrc'],
-        refs=[(device.epc_control.model.points['CmdVout'], 800)],
         model=device.epc_control,
         state=device.epc_control.model.points['St'],
         faulted_value=3,
-        cycles=cycles,
     )
+
+    demo(device=device, config=config, cycles=cycles)
 
 
 def abb_demo(device, invert_enable, cycles):
-    cmd_flags = {
-        'point': device.abb_control.model.points['ABBCmdBits'],
-        'flags': epcsunspecdemo.utils.Flags(
+    points = device.abb_control.model.points
+    refs =  [
+        Reference(point=points['ABBCmdV'], value=480),
+        Reference(point=points['ABBCmdHz'], value=60),
+        Reference(point=points['ABBCmdRealPower'], value=10000), #10kW
+        Reference(point=points['ABBCmdReactivePower'], value=5000), #5kVA
+    ]
+    config = DeviceConfig(
+        cmd_point=device.abb_control.model.points['ABBCmdBits'],
+        cmd_flags=epcsunspecdemo.utils.Flags(
             model=device.abb_control,
             point='ABBCmdBits',
         ),
-        'enable': 'Enable',
-        'fault_clear': 'FaultReset',
-        'invert_enable': None,
-    }
-
-    refs =  [
-        (device.abb_control.model.points['ABBCmdV'], 480),
-        (device.abb_control.model.points['ABBCmdHz'], 60),
-        (device.abb_control.model.points['ABBCmdRealPower'], 10000), #10kW
-        (device.abb_control.model.points['ABBCmdReactivePower'], 5000), #5kVA
-    ]
-
-    demo(
-        device=device,
-        cmd_flags=cmd_flags,
+        enable='Enable',
+        fault_clear='FaultReset',
+        invert_enable=None,
+        references=refs,
         ctl_src=None,
-        refs=refs,
         model=device.abb_control,
-        state=device.inverter.model.points['ABBActiveState'],
+        state=device.abb_control.model.points['ABBActiveState'],
         faulted_value=3, #probably wrong
-        cycles=cycles,
     )
+
+    demo(device=device, config=config, cycles=cycles)
 
 
 @click.group(
@@ -283,3 +276,23 @@ def add_commands(group):
     for group in (gridtied, dcdc, abb):
         group.add_command(serial)
         group.add_command(tcp)
+
+
+@attr.s
+class Reference:
+    point = attr.ib()
+    value = attr.ib()
+
+
+@attr.s
+class DeviceConfig:
+    cmd_point = attr.ib()
+    cmd_flags = attr.ib()
+    enable = attr.ib()
+    fault_clear = attr.ib()
+    invert_enable = attr.ib()
+    references = attr.ib()
+    ctl_src = attr.ib()
+    model = attr.ib()
+    state = attr.ib()
+    faulted_value = attr.ib()
