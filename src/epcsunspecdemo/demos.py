@@ -39,8 +39,8 @@ def demo(device, config, cycles):
     device.common.read()
     print(device.common)
 
-    device.model_17.read()
-    print(device.model_17)
+    device.serial.read()
+    print(device.serial)
 
     config.model.read()
     print(config.model)
@@ -84,8 +84,8 @@ def gridtied_demo(device, invert_enable, cycles):
     refs =  [
         Reference(point=points['CmdV'], value=480),
         Reference(point=points['CmdHz'], value=60),
-        Reference(point=points['CmdRealPwr'], value=10000), #10kW
-        Reference(point=points['CmdReactivePwr'], value=5000), #5kVA
+        Reference(point=points['CmdRealPwr'], value=100.8),
+        Reference(point=points['CmdReactivePwr'], value=50.4),
     ]
     config = DeviceConfig(
         cmd_point=device.epc_control.model.points['CmdBits'],
