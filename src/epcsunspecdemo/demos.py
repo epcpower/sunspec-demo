@@ -80,12 +80,13 @@ def demo(device, config, cycles):
         print("controlset")
 
 def gridtied_demo(device, invert_enable, cycles):
-    points = device.epc_control.model.points
+    points_basic = device.basic.model.points
+    points_epc = device.epc_control.model.points
     refs =  [
-        Reference(point=points['CmdV'], value=480),
-        Reference(point=points['CmdHz'], value=60),
-        Reference(point=points['CmdRealPwr'], value=100.8),
-        Reference(point=points['CmdReactivePwr'], value=50.4),
+        Reference(point=points_basic['RefV'], value=480),
+        Reference(point=points_basic['RefF'], value=60),
+        Reference(point=points_epc['CmdRealPwr'], value=100.8),
+        Reference(point=points_epc['CmdReactivePwr'], value=50.4),
     ]
     config = DeviceConfig(
         cmd_point=device.epc_control.model.points['CmdBits'],
@@ -103,7 +104,13 @@ def gridtied_demo(device, invert_enable, cycles):
         faulted_value=3,
     )
 
+    device.basic.read()
+    print(device.basic)
+    
     demo(device=device, config=config, cycles=cycles)
+
+    device.basic.read()
+    print(device.basic)
 
 
 def dcdc_demo(device, invert_enable, cycles):
