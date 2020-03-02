@@ -51,8 +51,8 @@ def demo(device, config, cycles):
     # stop
     value = config.cmd_flags.clear_all()
     if config.invert_enable:
-        value = config.cmd_flags.set(config.invert_enable)
-    send_val(config.cmd_point, value)
+        value = config.dio_flags.set(config.invert_enable)
+    send_val(config.dio_point, value)
 
     clear_faults(config=config)
 
@@ -79,10 +79,11 @@ def demo(device, config, cycles):
 
         print("controlset")
 
+
 def gridtied_demo(device, invert_enable, cycles):
     points_basic = device.basic.model.points
     points_epc = device.epc_control.model.points
-    refs =  [
+    refs = [
         Reference(point=points_basic['RefV'], value=480),
         Reference(point=points_basic['RefF'], value=60),
         Reference(point=points_epc['CmdRealPwr'], value=100.8),
@@ -94,9 +95,14 @@ def gridtied_demo(device, invert_enable, cycles):
             model=device.epc_control,
             point='CmdBits',
         ),
+        dio_point=device.epc_control.model.points['DIO'],
+        dio_flags=epcsunspecdemo.utils.Flags(
+            model=device.epc_control,
+            point='DIO',
+        ),
         enable='En',
         fault_clear='FltClr',
-        invert_enable='InvertHwEnable' if invert_enable else None,
+        invert_enable='HwEnInv' if invert_enable else None,
         references=refs,
         ctl_src=device.epc_control.model.points['CtlSrc'],
         model=device.epc_control,
@@ -120,9 +126,14 @@ def dcdc_demo(device, invert_enable, cycles):
             model=device.epc_control,
             point='CmdBits',
         ),
+        dio_point=device.epc_control.model.points['DIO'],
+        dio_flags=epcsunspecdemo.utils.Flags(
+            model=device.epc_control,
+            point='DIO',
+        ),
         enable='En',
         fault_clear='FltClr',
-        invert_enable='InvertHwEnable' if invert_enable else None,
+        invert_enable='HwEnInv' if invert_enable else None,
         references=[
             References(
                 point=device.epc_control.model.points['CmdVout'],
@@ -151,6 +162,11 @@ def abb_demo(device, invert_enable, cycles):
         cmd_flags=epcsunspecdemo.utils.Flags(
             model=device.abb_control,
             point='ABBCmdBits',
+        ),
+        dio_point=device.epc_control.model.points['DIO'],
+        dio_flags=epcsunspecdemo.utils.Flags(
+            model=device.epc_control,
+            point='DIO',
         ),
         enable='Enable',
         fault_clear='FaultReset',
@@ -296,6 +312,8 @@ class Reference:
 class DeviceConfig:
     cmd_point = attr.ib()
     cmd_flags = attr.ib()
+    dio_point = attr.ib()
+    dio_flags = attr.ib()
     enable = attr.ib()
     fault_clear = attr.ib()
     invert_enable = attr.ib()
