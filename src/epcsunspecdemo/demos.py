@@ -100,7 +100,7 @@ def gridtied_demo(device, invert_enable, cycles):
             model=device.epc_control,
             point='DIO',
         ),
-        enable='En',
+        enable='Enbl',
         fault_clear='FltClr',
         invert_enable='HwEnInv' if invert_enable else None,
         references=refs,
