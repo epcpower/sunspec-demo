@@ -84,8 +84,8 @@ def gridtied_demo(device, invert_enable, cycles):
     points_basic = device.basic.model.points
     points_epc = device.epc_control.model.points
     refs = [
-        Reference(point=points_basic['RefV'], value=480),
-        Reference(point=points_basic['RefF'], value=60),
+        Reference(point=points_basic['VRef'], value=480),
+        Reference(point=points_basic['ECPNomHz'], value=60),
         Reference(point=points_epc['CmdRealPwr'], value=100.8),
         Reference(point=points_epc['CmdReactivePwr'], value=50.4),
     ]
