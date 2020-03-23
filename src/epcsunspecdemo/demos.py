@@ -48,13 +48,14 @@ def demo(device, config, cycles):
     if config.ctl_src is not None:
         send_val(config.ctl_src, 1)
 
-    # stop
+    # stop and clear faults
     value = config.cmd_flags.clear_all()
+    clear_faults(config=config)
+    send_val(config.cmd_point, value)
+
     if config.invert_enable:
         value = config.dio_flags.set(config.invert_enable)
-    send_val(config.dio_point, value)
-
-    clear_faults(config=config)
+        send_val(config.dio_point, value)
 
     for ref in config.references:
         send_val(ref.point, ref.value)
