@@ -63,9 +63,12 @@ def demo(device, config, cycles):
     try:
         for _ in range(cycles):
             # enable and run
-            value = config.cmd_flags.set(config.enable)
-            send_val(config.cmd_point, value)
-            print('{}: {}'.format(value, config.cmd_flags.active()))
+            if config.en_point: #enable point separate from other cmd flags
+                send_val(config.en_point, 1)
+            else:
+                value = config.cmd_flags.set(config.enable)
+                send_val(config.cmd_point, value)
+                print('{}: {}'.format(value, config.cmd_flags.active()))
 
             config.model.read()
             print(config.model)
@@ -73,7 +76,10 @@ def demo(device, config, cycles):
             time.sleep(0.5)
     finally:
         # remove run command
-        send_val(config.cmd_point, config.cmd_flags.clear(config.enable))
+        if config.en_point: #enable point separate from other cmd flags
+            send_val(config.en_point, 0)
+        else:
+            send_val(config.cmd_point, config.cmd_flags.clear(config.enable))
         # clear control source, if defined
         if config.ctl_src is not None:
             send_val(config.ctl_src, 0)
@@ -83,14 +89,15 @@ def demo(device, config, cycles):
 
 def gridtied_demo(device, invert_enable, cycles):
     points_basic = device.basic.model.points
-    points_epc = device.epc_control.model.points
+    points_immediate = device.immediate.model.points
     refs = [
         Reference(point=points_basic['VRef'], value=480),
         Reference(point=points_basic['ECPNomHz'], value=60),
-        Reference(point=points_epc['CmdRealPwr'], value=100.8),
-        Reference(point=points_epc['CmdReactivePwr'], value=50.4),
+        Reference(point=points_immediate['WMaxLimPct'], value=25), #25% WMax
+        Reference(point=points_immediate['VArMaxPct'], value=10), #10% VArMax
     ]
     config = DeviceConfig(
+        en_point=points_immediate['Conn'],
         cmd_point=device.epc_control.model.points['CmdBits'],
         cmd_flags=epcsunspecdemo.utils.Flags(
             model=device.epc_control,
@@ -101,7 +108,7 @@ def gridtied_demo(device, invert_enable, cycles):
             model=device.epc_control,
             point='DIO',
         ),
-        enable='Enbl',
+        enable=None,
         fault_clear='FltClr',
         invert_enable='HwEnInv' if invert_enable else None,
         references=refs,
@@ -113,7 +120,13 @@ def gridtied_demo(device, invert_enable, cycles):
 
     device.basic.read()
     print(device.basic)
-    
+
+    #enable real and reactive power commands
+    send_val(points_immediate['WMaxLim_Ena'], 1)
+    send_val(points_immediate['VArPct_Ena'], 1)
+    #set var command mode to VArMax
+    send_val(points_immediate['VArPct_Mod'], 2)
+
     demo(device=device, config=config, cycles=cycles)
 
     device.basic.read()
@@ -311,6 +324,7 @@ class Reference:
 
 @attr.s
 class DeviceConfig:
+    en_point = attr.ib()
     cmd_point = attr.ib()
     cmd_flags = attr.ib()
     dio_point = attr.ib()
