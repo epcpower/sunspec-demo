@@ -18,6 +18,8 @@ def clear_faults(config):
     model.read_points()
     state_value = config.state.value_getter()
     print(f'Inverter State: {state_value}')
+    #initialize flags to avoid clearing any flags that are already set
+    config.cmd_flags.from_int(config.cmd_point.value_base)
 
     for attempt in range(10):
         # clear faults
@@ -48,12 +50,11 @@ def demo(device, config, cycles):
     if config.ctl_src is not None:
         send_val(config.ctl_src, 1)
 
-    # stop and clear faults
-    clear_faults(config=config)
-
     if config.invert_enable:
         value = config.dio_flags.set(config.invert_enable)
         send_val(config.dio_point, value)
+
+    clear_faults(config=config)
 
     for ref in config.references:
         send_val(ref.point, ref.value)
@@ -133,6 +134,39 @@ def gridtied_demo(device, invert_enable, cycles):
     print(device.basic)
 
 
+def mayhem_demo(device, invert_enable, cycles):
+    points = device.epc_control.model.points
+    refs =  [
+        Reference(point=points['CmdV'], value=480),
+        Reference(point=points['CmdHz'], value=60),
+        Reference(point=points['CmdRealPwr'], value=10000),
+        Reference(point=points['CmdReactivePwr'], value=5000),
+    ]
+    config = DeviceConfig(
+        en_point=None,
+        cmd_point=device.epc_control.model.points['CmdBits'],
+        cmd_flags=epcsunspecdemo.utils.Flags(
+            model=device.epc_control,
+            point='CmdBits',
+        ),
+        dio_point=device.epc_control.model.points['CmdBits'],
+        dio_flags=epcsunspecdemo.utils.Flags(
+            model=device.epc_control,
+            point='CmdBits',
+        ),
+        enable='En',
+        fault_clear='FltClr',
+        invert_enable='InvertHwEnable' if invert_enable else None,
+        references=refs,
+        ctl_src=device.epc_control.model.points['CtlSrc'],
+        model=device.epc_control,
+        state=device.inverter.model.points['StVnd'],
+        faulted_value=3,
+    )
+
+    demo(device=device, config=config, cycles=cycles)
+
+
 def dcdc_demo(device, invert_enable, cycles):
     config = DeviceConfig(
         cmd_point=device.epc_control.model.points['CmdBits'],
@@ -210,6 +244,14 @@ def abb_demo(device, invert_enable, cycles):
 @click.pass_obj
 def gridtied(config):
     config.common = gridtied_demo
+
+
+@click.group(
+    help='Demo connection to a legacy grid-tied converter',
+)
+@click.pass_obj
+def mh(config):
+    config.common = mayhem_demo
 
 
 @click.group(
@@ -317,10 +359,11 @@ def tcp(
 
 def add_commands(group):
     group.add_command(gridtied, name='gridtied')
+    group.add_command(mh, name='mh')
     group.add_command(dcdc, name='dcdc')
     group.add_command(abb, name='abb')
 
-    for group in (gridtied, dcdc, abb):
+    for group in (gridtied, mh, dcdc, abb):
         group.add_command(serial)
         group.add_command(tcp)
 
