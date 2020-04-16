@@ -49,9 +49,7 @@ def demo(device, config, cycles):
         send_val(config.ctl_src, 1)
 
     # stop and clear faults
-    value = config.cmd_flags.clear_all()
     clear_faults(config=config)
-    send_val(config.cmd_point, value)
 
     if config.invert_enable:
         value = config.dio_flags.set(config.invert_enable)
@@ -127,6 +125,8 @@ def gridtied_demo(device, invert_enable, cycles):
     #set var command mode to VArMax
     send_val(points_immediate['VArPct_Mod'], 2)
 
+    config.cmd_flags.clear_all()
+
     demo(device=device, config=config, cycles=cycles)
 
     device.basic.read()
@@ -172,6 +172,7 @@ def abb_demo(device, invert_enable, cycles):
         Reference(point=points['ABBCmdReactivePower'], value=5000), #5kVA
     ]
     config = DeviceConfig(
+        en_point=None,
         cmd_point=device.abb_control.model.points['ABBCmdBits'],
         cmd_flags=epcsunspecdemo.utils.Flags(
             model=device.abb_control,
@@ -191,6 +192,14 @@ def abb_demo(device, invert_enable, cycles):
         state=device.abb_control.model.points['ABBActiveState'],
         faulted_value=3, #probably wrong
     )
+
+    send_val(points['ABBCmdRealPowerMax'], 20000)
+    send_val(points['ABBCmdReactivePowerMax'], 10000)
+    
+    value = config.cmd_flags.clear_all()
+    value = config.cmd_flags.set('GrdFlw_Pctrl')
+    value = config.cmd_flags.set('GrdFlw_Qctrl')
+    send_val(config.cmd_point, value)
 
     demo(device=device, config=config, cycles=cycles)
 
