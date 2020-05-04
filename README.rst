@@ -21,7 +21,7 @@ Additionally this program acts as a basic example of using the `pysunspec`_ Pyth
 Installation
 ------------
 
-While ``create_venv.py`` can be run with Python 2.7 and 3.4+, it uses Python 3.7 to create a venv.
+While ``boots.py`` can be run with Python 2.7 and 3.4+, it uses Python 3.7 to create a venv.
 
 
 Windows
@@ -29,7 +29,7 @@ Windows
 
 ::
 
-    py create_venv.py
+    py boots.py
     venv\Scripts\epcsunspecdemo get-models
 
 
@@ -38,7 +38,7 @@ Linux
 
 ::
 
-    python create_venv.py
+    python boots.py
     venv/bin/epcsunspecdemo get-models
 
 
