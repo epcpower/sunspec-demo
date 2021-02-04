@@ -29,7 +29,7 @@ Windows
 
 ::
 
-    py boots.py
+    py boots.py ensure
     venv\Scripts\epcsunspecdemo get-models
 
 
@@ -38,7 +38,7 @@ Linux
 
 ::
 
-    python boots.py
+    python boots.py ensure
     venv/bin/epcsunspecdemo get-models
 
 
