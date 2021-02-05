@@ -45,6 +45,7 @@ jobs:
 
       - name: Package executable
         run: |
+          venv/Scripts/activate
           venv/Scripts/pip install pyinstaller
           venv/Scripts/pyinstaller pyinstaller.spec
 
