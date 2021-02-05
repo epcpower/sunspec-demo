@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches:
+      # TODO: cover hotfix, release, master, etc?
+      - develop
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - "*"
+  schedule:
+    # Daily at 05:14
+    - cron: '14 5 * * *'
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - name: CPython 3.9
+            version: 3.9
+            action: 3.9
+        arch:
+          - name: x64
+            action: x64
+            matrix: x64
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Python ${{ matrix.python.name }} ${{ matrix.arch.name }} for Windows
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.action }}
+          architecture: ${{ matrix.arch.action }}
+
+      - name: boots
+        run: |
+          ./boots.py ensure
+
+      - name: Package executable
+        run: |
+          pyinstaller pyinstaller.spec
+
+      - name: Archive executable
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact_name
+          path: src/dist/windows
+
+  test:
+    name: Unit Tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: boots
+        run: |
+          ./boots.py ensure
+
+      # TODO: run unit tests when available
+      # TODO: archive test results?
+
+  all:
+    name: All
+    runs-on: windows-latest
+    needs:
+      - build
+      - test
+    steps:
+      - name: This
+        shell: python
+        run: |
+          import this
