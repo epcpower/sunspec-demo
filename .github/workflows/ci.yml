@@ -44,10 +44,11 @@ jobs:
           ./boots.py ensure
 
       - name: Package executable
+        shell: bash
         run: |
-          ./venv/Scripts/activate
-          ./venv/Scripts/pip install pyinstaller
-          ./venv/Scripts/pyinstaller pyinstaller.spec
+          source venv/Scripts/activate
+          source venv/Scripts/pip install pyinstaller
+          source venv/Scripts/pyinstaller pyinstaller.spec
 
       - name: Archive executable
         uses: actions/upload-artifact@v2
