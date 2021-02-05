@@ -11,8 +11,8 @@ on:
     branches:
       - "*"
   schedule:
-    # Daily at 05:14
-    - cron: '14 5 * * *'
+    # Daily at 09:37
+    - cron: '37 9 * * *'
 
 jobs:
   build:
@@ -45,7 +45,8 @@ jobs:
 
       - name: Package executable
         run: |
-          pyinstaller pyinstaller.spec
+          venv/Scripts/pip install pyinstaller
+          venv/Scripts/pyinstaller pyinstaller.spec
 
       - name: Archive executable
         uses: actions/upload-artifact@v2
@@ -53,25 +54,11 @@ jobs:
           name: artifact_name
           path: src/dist/windows
 
-  test:
-    name: Unit Tests
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: boots
-        run: |
-          ./boots.py ensure
-
-      # TODO: run unit tests when available
-      # TODO: archive test results?
-
   all:
     name: All
     runs-on: windows-latest
     needs:
       - build
-      - test
     steps:
       - name: This
         shell: python
