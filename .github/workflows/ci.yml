@@ -41,13 +41,11 @@ jobs:
 
       - name: boots
         run: |
-          python boots.py ensure
+          python boots.py ensure --group build
 
       - name: Package executable
         run: |
-          source venv/Scripts/activate
-          source venv/Scripts/pip install pyinstaller
-          source venv/Scripts/pyinstaller pyinstaller.spec
+          venv/Scripts/pyinstaller pyinstaller.spec
 
       - name: Archive executable
         uses: actions/upload-artifact@v2
