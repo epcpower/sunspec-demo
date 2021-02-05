@@ -45,9 +45,9 @@ jobs:
 
       - name: Package executable
         run: |
-          venv/Scripts/activate
-          venv/Scripts/pip install pyinstaller
-          venv/Scripts/pyinstaller pyinstaller.spec
+          ./venv/Scripts/activate
+          ./venv/Scripts/pip install pyinstaller
+          ./venv/Scripts/pyinstaller pyinstaller.spec
 
       - name: Archive executable
         uses: actions/upload-artifact@v2
