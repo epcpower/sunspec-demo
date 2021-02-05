@@ -41,10 +41,9 @@ jobs:
 
       - name: boots
         run: |
-          ./boots.py ensure
+          python boots.py ensure
 
       - name: Package executable
-        shell: bash
         run: |
           source venv/Scripts/activate
           source venv/Scripts/pip install pyinstaller
@@ -66,3 +65,7 @@ jobs:
         shell: python
         run: |
           import this
+
+defaults:
+  run:
+    shell: bash
