@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches:
+      # TODO: cover hotfix, release, master, etc?
+      - develop
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - "*"
+  schedule:
+    # Daily at 09:37
+    - cron: '37 9 * * *'
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - name: CPython 3.9
+            version: 3.9
+            action: 3.9
+        arch:
+          - name: x64
+            action: x64
+            matrix: x64
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Python ${{ matrix.python.name }} ${{ matrix.arch.name }} for Windows
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.action }}
+          architecture: ${{ matrix.arch.action }}
+
+      - name: boots
+        run: |
+          python boots.py ensure --group build
+
+      - name: Package executable
+        run: |
+          venv/Scripts/pyinstaller pyinstaller.spec
+
+      - name: Archive executable
+        uses: actions/upload-artifact@v2
+        with:
+          name: executable
+          path: dist/epcsunspecdemo.exe
+
+  all:
+    name: All
+    runs-on: windows-latest
+    needs:
+      - build
+    steps:
+      - name: This
+        shell: python
+        run: |
+          import this
+
+defaults:
+  run:
+    shell: bash
