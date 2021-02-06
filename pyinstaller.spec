@@ -4,7 +4,6 @@ block_cipher = None
 
 
 import os
-import pathlib
 
 
 #https://github.com/pyinstaller/pyinstaller/wiki/Recipe-Setuptools-Entry-Point
@@ -45,9 +44,6 @@ def Entrypoint(dist, group, name, **kwargs):
 
 
 name = 'epcsunspecdemo'
-
-prefix = pathlib.Path('src')
-search_in = prefix
 
 a = Entrypoint(
     dist=name,
