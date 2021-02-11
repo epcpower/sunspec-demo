@@ -20,6 +20,7 @@ class Config:
 
 
 @click.group()
+@click.version_option(version=epcsunspecdemo.__version__)
 @click.pass_context
 def cli(context):
     context.obj = Config()
