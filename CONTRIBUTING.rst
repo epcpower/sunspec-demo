@@ -4,16 +4,11 @@ Releasing
 Summary
 -------
 
-- Create a release branch from the develop branch in the original ``epcpower/sunspec-demo`` repository, not in a fork.
-- Create a commit for a release candidate inside the release branch.
-- Create a Pull Request for the release. The same branch and PR will be used for both the release candidates and  the final release.
-- Get an approving review.
-- Once approved, tag the last commit in the branch as a release candidate.
-- Push the tag. This will trigger a build including the upload of artifacts.
-- Prepare a commit for a final release and push it to the release branch.
-- Get an approving review for the final release.
-- Tag the commit using the final release version. This will trigger the upload of artifacts.
-- Merge the release branch.
+- The sunspec-demo repository uses the `feature branch workflow <https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow>`_ process to control development.
+- The ``main`` branch must never be broken.
+- Development is performed in feature branches, requiring peer reviewed pull requests to merge into ``main``.
+- A release also require a branch, detailed in the step-by-step instructions below.
+- The ``versioneer`` package automatically manages version handling code.
 
 
 Step-by-step
@@ -21,48 +16,30 @@ Step-by-step
 
 - Define the final release version you are preparing.
 
-  - ``epcpower/sunspec-demo`` uses `CalVer <https://calver.org/>`_ of the form ``YYYY.0M.micro`` with the micro version just incrementing.
+  - ``epcpower/sunspec-demo`` uses `SemVer <https://semver.org/>`_ of the form ``MAJOR.MINOR.PATCH``.
   - Normalize the version according to `PEP 440 <https://www.python.org/dev/peps/pep-0440/#normalization>`_.
 
-- Create a release branch with a name of the form ``release-v2021.09`` starting from the ``develop`` branch.
+- Create a release branch with a name of the form ``release-vMAJOR.MINOR.PATCH`` (example: ``release-v1.2.4``) starting from the ``main`` branch.
 
-  - On the new release branch you will commit all tagged release candidate commits as well as the final tagged release commit.
+- Update the ``HISTORY.rst`` file.
 
-- Update the version to the release candidate with the first being ``rc1`` (as opposed to 0).
+  - Summarize all of the features and bug fixes since the previous release.
+  - Add a new release section to the top of the list.
 
-  - In ``src/epcsunspecdemo/_version.py`` the version is set manually formatted such as ``__version__ = "2021.09.0rc1"``
+    - Sunspec-demo VERSION (DATE)
 
-- Commit and push to the primary repository, not a fork.
+  - The format of each summarized feature and bug fix should be as follows:
 
-  - It is important to not use a fork so that pushed tags end up in the primary repository, server provided secrets for publishing to PyPI are available, and maybe more.
+    - Description of feature(s), bug fix(es), etc. (Link to appropriate pull request)
 
-- If working on the first release candidate from this branch, create a PR named in the form ``Release v2021.09``.
+- Commit and push update to the primary repository, not a fork.
+
+- Create a PR named in the form ``Release vMAJOR.MINOR.PATCH``.
 
 - Request a review and address raised concerns until receiving an approval.
 
-- Tag that commit in the format ``v2021.09rc1`` and push the tag to the primary repository.
+- Merge the pull request to ``main``.
 
-  - This will result in another build which will publish to PyPI.
-  - Confirm the presence of the release on PyPI.
+- Tag the merged commit in the format ``vMAJOR.MINOR.PATCH`` and push the tag to the primary repository.
 
-- `Dismiss the approving review <https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/dismissing-a-pull-request-review>`_.
-
-  - The review process will be reused for any subsequent release candidates, the final release, and the post-release tweaks so it must be cleared at each stage.
-
-- If another release candidate is required:
-
-  - Submit PRs against the release branch to integrate the needed changes. Any PRs could be cherry picks from the ``master`` branch if already resolved there, or direct PRs against the release branch that will be merged back into ``develop`` at the completion of the release.
-
-  - Return to the step where the version is updated and increment the release candidate number.
-
-- If ready for a final release, remove the release candidate indicator from the version.
-
-  - Edit ``src/epcsunspecdemo/_version.py`` to be formatted such as ``__version__ = "2021.09.0"`` to remove the release candidate indication.
-
-- If the final release has been completed, continue below.
-
-- Increment the patch/micro version by one and set to a development version.
-
-  - In ``src/epcsunspecdemo/_version.py`` the version is set manually formatted such as ``__version__ = "2021.09.1+dev"``
-
-- Merge without waiting for an approving review.
+  - This will result in another build, which will generate the official release artifacts.
