@@ -1,10 +1,10 @@
-Releasing
-=========
+Contribution and Release Process
+================================
 
 Summary
 -------
 
-- The sunspec-demo repository uses the `feature branch workflow <https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow>`_ process to control development.
+- The Sunspec-Demo repository uses the `feature branch workflow <https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow>`_ process to control development.
 - The ``main`` branch must never be broken.
 - Development is performed in feature branches, requiring peer reviewed pull requests to merge into ``main``. See step-by-step instructions below.
 - A release requires a release branch, detailed in the step-by-step instructions below.
@@ -28,7 +28,7 @@ Step-by-step feature / bug fix
 
   - If this is the first change since the previous release, create a new release section at the top of the list.
 
-    - The header should be as follows: Sunspec-demo VERSION (DATE)
+    - The header should be as follows: Sunspec-Demo VERSION (DATE)
 
   - Update the version depending on the change complexity (major/minor/patch). See the release instructions for the version semantics.
   - Add an entry describing the feature / bug fix for the current feature branch.
@@ -44,8 +44,7 @@ Step-by-step release
 
 - Define the final release version you are preparing.
 
-  - ``epcpower/sunspec-demo`` uses `SemVer <https://semver.org/>`_ of the form ``MAJOR.MINOR.PATCH``.
-  - Normalize the version according to `PEP 440 <https://www.python.org/dev/peps/pep-0440/#normalization>`_.
+  - The versioning scheme uses the `SemVer <https://semver.org/>`_ standard in the form ``MAJOR.MINOR.PATCH``.
 
 - Create a release branch with a name of the form ``release/MAJOR.MINOR.PATCH`` (example: ``release/1.2.4``) starting from the ``main`` branch.
 
@@ -53,8 +52,6 @@ Step-by-step release
 
   - Edit the date and version, if necessary.
   - Edit any of the change descriptions, if necessary, following the pattern described in the feature / bug fix instructions.
-
-- Commit and push update to the primary repository, not a fork.
 
 - Create a pull request named in the format ``Release vMAJOR.MINOR.PATCH``.
 
