@@ -50,8 +50,8 @@ jobs:
       - name: Archive executable
         uses: actions/upload-artifact@v2
         with:
-          name: executable
-          path: dist/epcsunspecdemo.exe
+          name: epcsunspecdemo
+          path: dist/epcsunspecdemo/*
 
   all:
     name: All
