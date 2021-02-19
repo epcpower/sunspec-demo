@@ -32,6 +32,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Install Python ${{ matrix.python.name }} ${{ matrix.arch.name }} for Windows
         uses: actions/setup-python@v2
