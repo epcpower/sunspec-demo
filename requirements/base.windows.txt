@@ -4,8 +4,6 @@
 #
 #    python boots.py lock
 #
--e git+https://github.com/altendky/pysunspec@3662dd0a7d6810652320284ac4256beee5b20f2d#egg=pysunspec
-    # via -r requirements\base.in
 attrs==18.2.0
     # via -r requirements\base.in
 certifi==2020.12.5
@@ -26,6 +24,8 @@ pip-tools==5.5.0
     # via -r requirements\pre.in
 pyserial==3.5
     # via pysunspec
+pysunspec==2.1.0
+    # via -r requirements\base.in
 requests==2.25.1
     # via
     #   gitignoreio
