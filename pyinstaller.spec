@@ -26,8 +26,6 @@ def Entrypoint(dist, group, name, **kwargs):
     kwargs.setdefault('pathex', [])
     # get the entry point
     ep = pkg_resources.get_entry_info(dist, group, name)
-    # insert path of the egg at the verify front of the search path
-    kwargs['pathex'] = [ep.dist.location] + kwargs['pathex']
     # script name must not be a valid module name to avoid name clashes on import
     script_path = os.path.join(workpath, name + '-script.py')
     print("creating script for entry point", dist, group, name)
