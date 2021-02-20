@@ -48,7 +48,7 @@ jobs:
       - name: Package executable
         run: |
           # help versioneer and pyinstaller get along
-          python -m pip install .
+          venv/Scripts/pip install .
           venv/Scripts/pyinstaller pyinstaller.spec
 
       - name: Archive executable
