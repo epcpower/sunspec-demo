@@ -51,6 +51,10 @@ jobs:
           venv/Scripts/pip install .
           venv/Scripts/pyinstaller pyinstaller.spec
 
+      - name: Report executable version
+        run: |
+          dist/epcsunspecdemo --version
+
       - name: Archive executable
         uses: actions/upload-artifact@v2
         with:
