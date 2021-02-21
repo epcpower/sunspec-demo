@@ -67,7 +67,7 @@ jobs:
 
           sys.stdout.buffer.write(completed_process.stdout)
 
-          unknown == b"unknown"
+          unknown = b"unknown"
           assert unknown not in completed_process.stdout, f"{unknown!r} found in above stdout"
           assert b"" == completed_process.stderr, f"stderr not empty: {completed_process.stderr!r}"
 
