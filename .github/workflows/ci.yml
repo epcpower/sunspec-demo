@@ -52,8 +52,23 @@ jobs:
           venv/Scripts/pyinstaller pyinstaller.spec
 
       - name: Report executable version
+        shell: python
         run: |
-          dist/epcsunspecdemo --version
+          # this belongs in a test once we get a test suite started
+
+          import subprocess
+          
+          completed_process = subprocess.run(
+              ["dist/epcsunspecdemo", "--version"],
+              capture_output=True,
+              check=True,
+          )
+          
+          sys.stdout.write(completed_process.stdout)
+          
+          unknown = b"unknown"
+          assert unknown not in completed_process.stdout, f"{unknown!r} found in above stdout"
+          assert b"" = completed_process.stderr, f"stderr not empty: {completed_process.stderr!r}"
 
       - name: Archive executable
         uses: actions/upload-artifact@v2
