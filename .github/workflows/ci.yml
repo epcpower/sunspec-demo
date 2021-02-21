@@ -65,7 +65,7 @@ jobs:
               check=True,
           )
 
-          sys.stdout.write(completed_process.stdout)
+          sys.stdout.buffer.write(completed_process.stdout)
 
           unknown == b"unknown"
           assert unknown not in completed_process.stdout, f"{unknown!r} found in above stdout"
