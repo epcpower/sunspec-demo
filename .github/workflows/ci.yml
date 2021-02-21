@@ -57,6 +57,7 @@ jobs:
           # this belongs in a test once we get a test suite started
 
           import subprocess
+          import sys
 
           completed_process = subprocess.run(
               ["dist/epcsunspecdemo", "--version"],
