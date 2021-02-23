@@ -42,14 +42,15 @@ def read(registers_per_read, log_model, total_octets):
             total_16_bit_bytes - offset,
         )
 
-        yield from itertools.chain.from_iterable(
-            getattr(log_model, 'R{:03}'.format(n)).to_bytes(
+        for n in range(registers_to_read):
+            # the Modbus registers are 16-bits, or two local 8-bit bytes
+            byte_pair = getattr(log_model, 'R{:03}'.format(n)).to_bytes(
                 2,
                 byteorder='big',
                 signed=False,
             )
-            for n in range(registers_to_read)
-        )
+            for byte in byte_pair:
+                yield byte
 
         offset += registers_to_read
 
