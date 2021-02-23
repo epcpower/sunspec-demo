@@ -32,6 +32,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Install Python ${{ matrix.python.name }} ${{ matrix.arch.name }} for Windows
         uses: actions/setup-python@v2
@@ -45,7 +47,29 @@ jobs:
 
       - name: Package executable
         run: |
+          # help versioneer and pyinstaller get along
+          venv/Scripts/pip install .
           venv/Scripts/pyinstaller pyinstaller.spec
+
+      - name: Check and report executable version
+        shell: python
+        run: |
+          # this belongs in a test once we get a test suite started
+
+          import subprocess
+          import sys
+
+          completed_process = subprocess.run(
+              ["dist/epcsunspecdemo", "--version"],
+              capture_output=True,
+              check=True,
+          )
+
+          sys.stdout.buffer.write(completed_process.stdout)
+
+          unknown = b"unknown"
+          assert unknown not in completed_process.stdout, f"{unknown!r} found in above stdout"
+          assert b"" == completed_process.stderr, f"stderr not empty: {completed_process.stderr!r}"
 
       - name: Archive executable
         uses: actions/upload-artifact@v2
