@@ -9,7 +9,7 @@ on:
       - v*
   pull_request:
     branches:
-      - "*"
+      - "**"
   schedule:
     # Daily at 09:37
     - cron: '37 9 * * *'
