@@ -3,6 +3,7 @@ import sys
 import time
 
 import click
+import sunspec.core.suns
 import toolz
 import tqdm
 
@@ -31,6 +32,9 @@ def terminate_on_model_failure(device, model, name):
 def read(registers_per_read, log_model, total_octets):
     total_16_bit_bytes, remainder = divmod(total_octets, 2)
 
+    assert log_model.model.points['R000'].point_type.type == 'uint16', 'there is no type to unimplemented value map so we just assume uint16 for now'
+    unimplemented_value = sunspec.core.suns.SUNS_UNIMPL_UINT16
+
     offset = 0
     while offset < total_16_bit_bytes:
         log_model.Offset = offset
@@ -43,8 +47,12 @@ def read(registers_per_read, log_model, total_octets):
         )
 
         for n in range(registers_to_read):
+            register_value = getattr(log_model, 'R{:03}'.format(n))
+            if register_value is None:
+                register_value = unimplemented_value
+
             # the Modbus registers are 16-bits, or two local 8-bit bytes
-            byte_pair = getattr(log_model, 'R{:03}'.format(n)).to_bytes(
+            byte_pair = register_value.to_bytes(
                 2,
                 byteorder='big',
                 signed=False,
