@@ -20,7 +20,7 @@ requests==2.25.1
     # via romp
 romp==2020.12
     # via -r requirements\pre.in
-urllib3==1.26.3
+urllib3==1.26.4
     # via requests
 wheel==0.36.2
     # via -r requirements\pre.in
