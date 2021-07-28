@@ -9,6 +9,9 @@ EPC SunSpec Demo
    :alt: source on GitHub
    :target: https://github.com/epcpower/sunspec-demo
 
+.. |GitHub| image:: https://img.shields.io/github/workflow/status/epcpower/sunspec-demo/CI/main?color=seagreen&logo=GitHub-Actions&logoColor=whitesmoke
+   :alt: tests on GitHub Actions
+   :target: https://github.com/epcpower/sunspec-demo/actions?query=branch%3Amain
 
 The EPC SunSpec demo implements basic SunSpec communications with EPC converters.
 SunSpec is built on Modbus and works with both Modbus RTU (direct serial) and Modbus TCP connections.
