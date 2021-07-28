@@ -5,7 +5,7 @@ EPC SunSpec Demo
 |GitHub|
 
 
-.. |GitHub| image:: https://img.shields.io/github/last-commit/epcpower/sunspec-demo
+.. |GitHub| image:: https://img.shields.io/github/last-commit/epcpower/sunspec-demo/main.svg
    :alt: source on GitHub
    :target: https://github.com/epcpower/sunspec-demo
 
