@@ -2,14 +2,13 @@
 EPC SunSpec Demo
 ================
 
-|GitHub|
+|github actions| |github source|
 
-
-.. |GitHub| image:: https://img.shields.io/github/last-commit/epcpower/sunspec-demo/main.svg
+.. |github source| image:: https://img.shields.io/github/last-commit/epcpower/sunspec-demo/main.svg
    :alt: source on GitHub
    :target: https://github.com/epcpower/sunspec-demo
 
-.. |GitHub| image:: https://img.shields.io/github/workflow/status/epcpower/sunspec-demo/CI/main?color=seagreen&logo=GitHub-Actions&logoColor=whitesmoke
+.. |github actions| image:: https://img.shields.io/github/workflow/status/epcpower/sunspec-demo/CI/main?color=seagreen&logo=GitHub-Actions&logoColor=whitesmoke
    :alt: tests on GitHub Actions
    :target: https://github.com/epcpower/sunspec-demo/actions?query=branch%3Amain
 
