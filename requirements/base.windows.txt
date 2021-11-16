@@ -6,9 +6,9 @@
 #
 attrs==18.2.0
     # via -r requirements\base.in
-certifi==2020.12.5
+certifi==2021.10.8
     # via requests
-chardet==4.0.0
+charset-normalizer==2.0.7
     # via requests
 click==7.0
     # via
@@ -18,7 +18,7 @@ click==7.0
     #   romp
 gitignoreio==0.1.5
     # via -r requirements\base.in
-idna==2.10
+idna==3.3
     # via requests
 pip-tools==5.5.0
     # via -r requirements\pre.in
@@ -26,17 +26,17 @@ pyserial==3.5
     # via pysunspec
 pysunspec==2.1.0
     # via -r requirements\base.in
-requests==2.25.1
+requests==2.26.0
     # via
     #   gitignoreio
     #   romp
-romp==2020.12
+romp==2021.11
     # via -r requirements\pre.in
 toolz==0.9.0
     # via -r requirements\base.in
 tqdm==4.32.1
     # via -r requirements\base.in
-urllib3==1.26.4
+urllib3==1.26.7
     # via requests
 wheel==0.36.2
     # via -r requirements\pre.in
