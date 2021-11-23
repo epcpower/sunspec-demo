@@ -3,11 +3,8 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - "**"
     tags:
-      - v*
-  pull_request:
-    branches:
       - "**"
   schedule:
     # Daily at 09:37
