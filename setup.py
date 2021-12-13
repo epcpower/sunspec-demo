@@ -4,7 +4,5 @@ import versioneer
 setuptools.setup(
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-        install_requires=[
-        "wheel",
-        ]
+    setup_require=['wheel'],
 )
