@@ -1,5 +1,8 @@
+import toml
+import os
 """Top-level package for epcsunspecdemo."""
 
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
+#get version from toml
+parent_dir = os.path.realpath(".")
+toml_dict = toml.load(parent_dir + '/pyproject.toml')
+__version__ = toml_dict['tool']['poetry']['version']
