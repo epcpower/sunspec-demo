@@ -61,7 +61,8 @@ jobs:
           poetry run pyinstaller pyinstaller.spec
           pwd
           ls dist/
-          dist/epcsunspecdemo --version 
+          echo "dist epcdemo"
+          dist/epcsunspecdemo.exe --version 
 
 #      - name: Package executable
 #        run: |
