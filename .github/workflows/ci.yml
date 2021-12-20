@@ -46,9 +46,12 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install poetry
 
-      - name: poetry install dependencies
+      - name: poetry install
         run: |
           poetry install
+
+      - name: run pyinstaller
+        run: |
           poetry run pyinstaller pyinstaller.spec
 
       - name: Check and report executable version
