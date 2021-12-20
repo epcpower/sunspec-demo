@@ -58,7 +58,7 @@ jobs:
         run: |
           # python boots.py ensure --group build
           poetry install
-          poetry install pyinstaller pyinstaller.spec
+          poetry run pyinstaller pyinstaller.spec
 
 #      - name: Package executable
 #        run: |
