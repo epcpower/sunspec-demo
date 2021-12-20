@@ -213,8 +213,8 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "3.9.0"
-content-hash = "b70c7845f9737ae38420cc7895b7a5c7d8ee409810f3a47deb4fbf7192a119f8"
+python-versions = "3.9.9"
+content-hash = "cda165c49af9cc1d84b73b27bfd39c7e6126176d6bbb5a90258a03ab58c35db8"
 
 [metadata.files]
 altgraph = [
