@@ -39,7 +39,10 @@ jobs:
         with:
           python-version: ${{ matrix.python.action }}
           architecture: ${{ matrix.arch.action }}
-
+      - name: Run image
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
       - name: boots
         run: |
           # python boots.py ensure --group build
