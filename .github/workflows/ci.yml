@@ -40,6 +40,19 @@ jobs:
           python-version: ${{ matrix.python.action }}
           architecture: ${{ matrix.arch.action }}
 
+      - name: Install poetry ${{ matrix.poetry-version }}
+        run: |
+          python -m ensurepip
+          python -m pip install --upgrade pip
+          python -m pip install poetry==${{ matrix.poetry-version }}
+
+      - name: View poetry --help
+        run: poetry --help
+
+      - name: Install dependencies
+        shell: bash
+        run: python -m poetry install
+
       - name: boots
         run: |
           # python boots.py ensure --group build
