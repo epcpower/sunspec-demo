@@ -39,8 +39,7 @@ jobs:
         with:
           python-version: ${{ matrix.python.action }}
           architecture: ${{ matrix.arch.action }}
-      - name: Run image
-
+          
       - name: boots
         run: |
           # python boots.py ensure --group build
