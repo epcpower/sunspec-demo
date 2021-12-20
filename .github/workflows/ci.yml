@@ -21,9 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         python:
-          - name: CPython 3.9
-            version: 3.9
-            action: 3.9
+          - name: CPython 3.7
+            version: 3.7
+            action: 3.7
         arch:
           - name: x64
             action: x64
@@ -40,16 +40,16 @@ jobs:
           python-version: ${{ matrix.python.action }}
           architecture: ${{ matrix.arch.action }}
 
-      - name: boots
+      - name: Install poetry ${{ matrix.poetry-version }}
         run: |
-          # python boots.py ensure --group build
-          poetry install
+          python -m ensurepip
+          python -m pip install --upgrade pip
+          python -m pip install poetry
 
-#      - name: Package executable
-#        run: |
-#          # help versioneer and pyinstaller get along
-#          venv/Scripts/pip install .
-#          venv/Scripts/pyinstaller pyinstaller.spec
+      - name: poetry install dependencies
+        run: |
+          poetry install
+          poetry run pyinstaller pyinstaller.spec
 
       - name: Check and report executable version
         shell: python
