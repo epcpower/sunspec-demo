@@ -42,13 +42,14 @@ jobs:
 
       - name: boots
         run: |
-          python boots.py ensure --group build
+          # python boots.py ensure --group build
+          poetry install
 
-      - name: Package executable
-        run: |
-          # help versioneer and pyinstaller get along
-          venv/Scripts/pip install .
-          venv/Scripts/pyinstaller pyinstaller.spec
+#      - name: Package executable
+#        run: |
+#          # help versioneer and pyinstaller get along
+#          venv/Scripts/pip install .
+#          venv/Scripts/pyinstaller pyinstaller.spec
 
       - name: Check and report executable version
         shell: python
