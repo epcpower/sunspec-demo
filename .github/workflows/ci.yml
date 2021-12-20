@@ -21,9 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         python:
-          - name: CPython 3.9
-            version: 3.9
-            action: 3.9
+          - name: CPython 3.7
+            version: 3.7
+            action: 3.7
         arch:
           - name: x64
             action: x64
@@ -58,7 +58,7 @@ jobs:
           pwd
           ls dist/
           echo "dist epcdemo"
-          poetry run dist/epcsunspecdemo.exe --version 
+          dist/epcsunspecdemo.exe --version 
 
 #      - name: Package executable
 #        run: |
