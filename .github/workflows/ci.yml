@@ -43,6 +43,8 @@ jobs:
       - name: boots
         run: |
           # python boots.py ensure --group build
+          #install poetry
+          (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
           poetry install
 
 #      - name: Package executable
