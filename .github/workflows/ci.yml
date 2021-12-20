@@ -58,7 +58,7 @@ jobs:
           pwd
           ls dist/
           echo "dist epcdemo"
-          dist/epcsunspecdemo.exe --version 
+          poetry run dist/epcsunspecdemo.exe --version 
 
 #      - name: Package executable
 #        run: |
