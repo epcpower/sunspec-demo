@@ -58,6 +58,7 @@ jobs:
         run: |
           # python boots.py ensure --group build
           poetry install
+          poetry build
 
 #      - name: Package executable
 #        run: |
