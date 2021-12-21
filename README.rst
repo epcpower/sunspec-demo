@@ -23,15 +23,16 @@ Additionally this program acts as a basic example of using the `pysunspec`_ Pyth
 Installation
 ------------
 
-While ``boots.py`` can be run with Python 2.7 and 3.4+, it uses Python 3.7 to create a venv.
-
+Must install poetry & poetry-dynamic-versionioning
+pip install poetry
+pip install poetry-dynamic-versioning
 
 Windows
 =======
 
 ::
 
-    py boots.py ensure
+    poetry install
     venv\Scripts\epcsunspecdemo get-models
 
 
@@ -40,7 +41,7 @@ Linux
 
 ::
 
-    python boots.py ensure
+    poetry install
     venv/bin/epcsunspecdemo get-models
 
 
