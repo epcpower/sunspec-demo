@@ -1,6 +1,8 @@
 import toml
 import os
+import subprocess
 """Top-level package for epcsunspecdemo."""
+
 
 #get version from toml
 parent_dir = os.path.realpath(".")
