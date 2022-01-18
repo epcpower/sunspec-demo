@@ -40,7 +40,7 @@ jobs:
           python-version: ${{ matrix.python.action }}
           architecture: ${{ matrix.arch.action }}
 
-      - name: Install poetry ${{ matrix.poetry-version }}
+      - name: Install poetry
         run: |
           python3 -m ensurepip
           python3 -m pip install --upgrade pip
