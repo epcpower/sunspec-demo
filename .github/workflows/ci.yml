@@ -42,9 +42,9 @@ jobs:
 
       - name: Install poetry ${{ matrix.poetry-version }}
         run: |
-          python -m ensurepip
-          python -m pip install --upgrade pip
-          python -m pip install poetry
+          python3 -m ensurepip
+          python3 -m pip install --upgrade pip
+          python3 -m pip install poetry
 
       - name: poetry install
         run: |
