@@ -40,14 +40,11 @@ jobs:
           python-version: ${{ matrix.python.action }}
           architecture: ${{ matrix.arch.action }}
 
-      - name: Install poetry
+      - name: Install Poetry and Run
         run: |
           python3 -m ensurepip
           python3 -m pip install --upgrade pip
           python3 -m pip install poetry
-
-      - name: poetry install
-        run: |
           poetry install
 
       - name: run pyinstaller
