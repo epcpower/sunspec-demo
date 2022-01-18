@@ -56,25 +56,25 @@ jobs:
           poetry run pyinstaller pyinstaller.spec
           ls dist
 
-      - name: Check and report executable version
-        shell: python
-        run: |
-          # this belongs in a test once we get a test suite started
+    #  - name: Check and report executable version
+    #    shell: python
+    #    run: |
+    #      # this belongs in a test once we get a test suite started
 
-          import subprocess
-          import sys
+    #      import subprocess
+    #      import sys
 
-          completed_process = subprocess.run(
-              [".\\dist\\epcsunspecdemo", "--version"],
-              capture_output=True,
-              check=True,
-          )
+    #      completed_process = subprocess.run(
+    #          [".\\dist\\epcsunspecdemo", "--version"],
+    #          capture_output=True,
+    #          check=True,
+    #      )
 
-          sys.stdout.buffer.write(completed_process.stdout)
+    #      sys.stdout.buffer.write(completed_process.stdout)
 
-          unknown = b"unknown"
-          assert unknown not in completed_process.stdout, f"{unknown!r} found in above stdout"
-          assert b"" == completed_process.stderr, f"stderr not empty: {completed_process.stderr!r}"
+    #      unknown = b"unknown"
+    #      assert unknown not in completed_process.stdout, f"{unknown!r} found in above stdout"
+    #      assert b"" == completed_process.stderr, f"stderr not empty: {completed_process.stderr!r}"
 
       - name: Archive executable
         uses: actions/upload-artifact@v2
