@@ -9,7 +9,7 @@ enable = true
 
 
 [tool.poetry.dependencies]
-python = "3.7.9"
+python = "^3.9"
 attrs = "18.2.0"
 click = "7"
 gitignoreio = "0.1.5"
