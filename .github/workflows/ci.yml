@@ -49,9 +49,6 @@ jobs:
       - name: poetry install
         run: |
           poetry env info
-          #which python3
-          #ls poetry env use -vvv C:\\hostedtoolcache\\windows\\Python\\3.9.9\\
-          #poetry env use -vvv C:\\hostedtoolcache\\windows\\Python\\3.9.9\\bin\\python
           poetry install
 
       - name: run pyinstaller
@@ -68,7 +65,7 @@ jobs:
           import sys
 
           completed_process = subprocess.run(
-              ["dist/epcsunspecdemo", "--version"],
+              [".\\dist\\epcsunspecdemo", "--version"],
               capture_output=True,
               check=True,
           )
