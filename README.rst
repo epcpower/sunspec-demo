@@ -27,22 +27,13 @@ Must install poetry & poetry-dynamic-versionioning
 pip install poetry
 pip install poetry-dynamic-versioning
 
-Windows
+Windows & Linux
 =======
 
 ::
 
     poetry install
-    venv\Scripts\epcsunspecdemo get-models
-
-
-Linux
-=====
-
-::
-
-    poetry install
-    venv/bin/epcsunspecdemo get-models
+    poetry run epcsunspecdemo get-models
 
 
 -------
