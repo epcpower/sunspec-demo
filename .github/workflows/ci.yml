@@ -49,7 +49,7 @@ jobs:
       - name: poetry install
         run: |
           which python3
-          poetry env use -vvv C:\hostedtoolcache\windows\Python\3.9.9\bin\python
+          poetry env use -vvv C:\\hostedtoolcache\\windows\\Python\\3.9.9\\bin\\python
           poetry install
 
       - name: run pyinstaller
