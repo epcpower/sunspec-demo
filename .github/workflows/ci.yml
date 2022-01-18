@@ -63,7 +63,7 @@ jobs:
           import sys
 
           completed_process = subprocess.run(
-              [".\\dist\\epcsunspecdemo", "--version"],
+              ["dist/epcsunspecdemo", "--version"],
               capture_output=True,
               check=True,
           )
