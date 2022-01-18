@@ -2,8 +2,6 @@
 name = "epcsunspecdemo"
 version = "0.1.0.post46.dev0+2a57176"
 description = ""
-authors = ["Alex Anker <alex.anker@epcpower.com>"]
-
 [tool.poetry-dynamic-versioning]
 enable = true
 
@@ -12,15 +10,15 @@ enable = true
 python = "^3.7"
 attrs = "18.2.0"
 click = "7"
-gitignoreio = "0.1.5"
 toolz = "0.9.0"
 tqdm = "4.32.1"
 pysunspec = "2.1.0"
 setuptools = "53.0.0"
 toml = "^0.10.2"
+[tool.poetry.dev-dependencies]
+gitignoreio = "0.1.5"
 pyinstaller = "4.2"
 
-[tool.poetry.dev-dependencies]
 
 [tool.poetry.scripts]
 epcsunspecdemo = 'epcsunspecdemo.cli:cli'
