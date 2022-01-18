@@ -2,7 +2,7 @@
 name = "epcsunspecdemo"
 version = "0.1.0.post46.dev0+2a57176"
 description = ""
-authors = ["Alex Anker <alex.anker@epcpower.com>"]
+authors = [""]
 
 [tool.poetry-dynamic-versioning]
 enable = true
