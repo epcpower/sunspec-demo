@@ -57,6 +57,7 @@ jobs:
       - name: run pyinstaller
         run: |
           poetry run pyinstaller pyinstaller.spec
+          ls
 
       - name: Check and report executable version
         shell: python
