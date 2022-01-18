@@ -21,9 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         python:
-          - name: CPython 3.7
-            version: 3.7
-            action: 3.7
+          - name: CPython 3.9
+            version: 3.9
+            action: 3.9
         arch:
           - name: x64
             action: x64
