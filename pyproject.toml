@@ -1,12 +1,15 @@
 [tool.poetry]
 name = "epcsunspecdemo"
-version = "0.0.0"
+version = "0.1.0.post83.dev0+18849f2"
 description = ""
 authors = ["Alex Anker <alex.anker@epcpower.com>"]
 
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
+
+[tool.poetry-dynamic-versioning.substitution]
+files = ["src/epcsunspecdemo/__init__.py"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -17,6 +20,9 @@ tqdm = "4.32.1"
 pysunspec = "2.1.1"
 setuptools = "53.0.0"
 toml = "^0.10.2"
+importlib = "^1.0.4"
+importlib-metadata = "^4.10.1"
+typing-extensions = "^4.0.1"
 [tool.poetry.dev-dependencies]
 gitignoreio = "0.1.5"
 pyinstaller = "4.2"
