@@ -6,7 +6,7 @@ authors = ["Alex Anker <alex.anker@epcpower.com>"]
 
 [tool.poetry-dynamic-versioning]
 enable = true
-
+vcs = "git"
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -20,6 +20,7 @@ toml = "^0.10.2"
 [tool.poetry.dev-dependencies]
 gitignoreio = "0.1.5"
 pyinstaller = "4.2"
+poetry-dynamic-versioning = "^0.13.1"
 
 
 [tool.poetry.scripts]
