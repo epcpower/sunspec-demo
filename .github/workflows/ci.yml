@@ -45,6 +45,8 @@ jobs:
           python3 -m ensurepip
           python3 -m pip install --upgrade pip
           python3 -m pip install poetry
+          python3 -m pip install poetry poetry-dynamic-versioning
+
           poetry install
 
       - name: run pyinstaller
