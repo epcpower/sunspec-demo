@@ -49,10 +49,15 @@ jobs:
           poetry install
 
       - name: Package executable
+        env:
+          TWINE_USERNAME : ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD : ${{ secrets.TWINE_PASSWORD }}
         run: |
           #set the versioning in __init__.py
           poetry run poetry-dynamic-versioning.exe
           poetry run pyinstaller pyinstaller.spec
+          poetry build
+          poetry publish
 
       - name: Check and report executable version
         shell: python
