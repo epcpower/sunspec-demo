@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "epcsunspecdemo"
-version = "0.1.0.post83.dev0+18849f2"
+version = "0.0.0"
 description = ""
 authors = ["Alex Anker <alex.anker@epcpower.com>"]
 
