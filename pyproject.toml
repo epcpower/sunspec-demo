@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "sunspecdemo"
-version = "0.1.2"
+version = "0.0.0"
 description = "EPC SunSpec demonstration tool"
 authors = ["Alex Anker <alex.anker@epcpower.com>"]
 license = "MIT"
 
 [tool.poetry-dynamic-versioning]
-enable = false
+enable = true
 vcs = "git"
 format = "{base}"
 
