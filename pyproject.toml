@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "sunspecdemo"
-version = "0.1.1"
-description = ""
+version = "0.1.2"
+description = "EPC SunSpec demonstration tool"
 authors = ["Alex Anker <alex.anker@epcpower.com>"]
 license = "MIT"
 
 [tool.poetry-dynamic-versioning]
-enable = true
+enable = false
 vcs = "git"
 format = "{base}"
 
@@ -30,7 +30,6 @@ typing-extensions = "^4.0.1"
 gitignoreio = "0.1.5"
 pyinstaller = "4.2"
 poetry-dynamic-versioning = "^0.13.1"
-
 
 [tool.poetry.scripts]
 sunspecdemo = 'sunspecdemo.cli:cli'
