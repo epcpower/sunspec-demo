@@ -40,7 +40,7 @@ jobs:
           python-version: ${{ matrix.python.action }}
           architecture: ${{ matrix.arch.action }}
 
-      - name: Install Poetry and Run
+      - name: Install Poetry and Venv
         run: |
           python3 -m ensurepip
           python3 -m pip install --upgrade pip
@@ -49,12 +49,16 @@ jobs:
           poetry install
 
       - name: Package executable
-
         run: |
-          #set the versioning in __init__.py
+          # set the versioning
           poetry run poetry-dynamic-versioning.exe
           poetry run pyinstaller pyinstaller.spec
           poetry build
+
+      - name: Publish executable
+        #only run if a new tag is created
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
           poetry publish -u __token__ -p ${{ secrets.TWINE_TOKEN }}
 
       - name: Check and report executable version
