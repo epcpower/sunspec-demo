@@ -3,7 +3,7 @@ import sys
 
 import click
 
-import epcsunspecdemo.clishared
+import sunspecdemo.clishared
 
 
 @click.group(
@@ -69,11 +69,11 @@ def common(
             client_point.write()
 
 
-commands = epcsunspecdemo.clishared.Commands.build(
+commands = sunspecdemo.clishared.Commands.build(
     options=(
-        epcsunspecdemo.clishared.repeating_point_names_and_values_option,
-        epcsunspecdemo.clishared.model_name_option,
-        epcsunspecdemo.clishared.point_names_and_values_option,
+        sunspecdemo.clishared.repeating_point_names_and_values_option,
+        sunspecdemo.clishared.model_name_option,
+        sunspecdemo.clishared.point_names_and_values_option,
     ),
     common=common,
 )

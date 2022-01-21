@@ -4,8 +4,8 @@ import attr
 import click
 import sunspec.core.client
 
-import epcsunspecdemo.clishared
-import epcsunspecdemo.utils
+import sunspecdemo.clishared
+import sunspecdemo.utils
 
 
 def send_val(point, val):
@@ -98,12 +98,12 @@ def gridtied_demo(device, invert_enable, cycles):
     config = DeviceConfig(
         en_point=points_immediate['Conn'],
         cmd_point=device.epc_control.model.points['CmdBits'],
-        cmd_flags=epcsunspecdemo.utils.Flags(
+        cmd_flags=sunspecdemo.utils.Flags(
             model=device.epc_control,
             point='CmdBits',
         ),
         dio_point=device.epc_control.model.points['DIO'],
-        dio_flags=epcsunspecdemo.utils.Flags(
+        dio_flags=sunspecdemo.utils.Flags(
             model=device.epc_control,
             point='DIO',
         ),
@@ -145,12 +145,12 @@ def mayhem_demo(device, invert_enable, cycles):
     config = DeviceConfig(
         en_point=None,
         cmd_point=device.epc_control.model.points['CmdBits'],
-        cmd_flags=epcsunspecdemo.utils.Flags(
+        cmd_flags=sunspecdemo.utils.Flags(
             model=device.epc_control,
             point='CmdBits',
         ),
         dio_point=device.epc_control.model.points['CmdBits'],
-        dio_flags=epcsunspecdemo.utils.Flags(
+        dio_flags=sunspecdemo.utils.Flags(
             model=device.epc_control,
             point='CmdBits',
         ),
@@ -170,12 +170,12 @@ def mayhem_demo(device, invert_enable, cycles):
 def dcdc_demo(device, invert_enable, cycles):
     config = DeviceConfig(
         cmd_point=device.epc_control.model.points['CmdBits'],
-        cmd_flags=epcsunspecdemo.utils.Flags(
+        cmd_flags=sunspecdemo.utils.Flags(
             model=device.epc_control,
             point='CmdBits',
         ),
         dio_point=device.epc_control.model.points['DIO'],
-        dio_flags=epcsunspecdemo.utils.Flags(
+        dio_flags=sunspecdemo.utils.Flags(
             model=device.epc_control,
             point='DIO',
         ),
@@ -208,12 +208,12 @@ def abb_demo(device, invert_enable, cycles):
     config = DeviceConfig(
         en_point=None,
         cmd_point=device.abb_control.model.points['ABBCmdBits'],
-        cmd_flags=epcsunspecdemo.utils.Flags(
+        cmd_flags=sunspecdemo.utils.Flags(
             model=device.abb_control,
             point='ABBCmdBits',
         ),
         dio_point=device.epc_control.model.points['DIO'],
-        dio_flags=epcsunspecdemo.utils.Flags(
+        dio_flags=sunspecdemo.utils.Flags(
             model=device.epc_control,
             point='DIO',
         ),
@@ -229,7 +229,7 @@ def abb_demo(device, invert_enable, cycles):
 
     send_val(points['ABBCmdRealPowerMax'], 20000)
     send_val(points['ABBCmdReactivePowerMax'], 10000)
-    
+
     value = config.cmd_flags.clear_all()
     value = config.cmd_flags.set('GrdFlw_Pctrl')
     value = config.cmd_flags.set('GrdFlw_Qctrl')
@@ -286,12 +286,12 @@ cycles_option = click.option(
 @click.command(
     help='Demo direct serial Modbus RTU connection',
 )
-@epcsunspecdemo.clishared.serial_port_option
-@epcsunspecdemo.clishared.serial_baudrate_option
-@epcsunspecdemo.clishared.timeout_option
-@epcsunspecdemo.clishared.model_path_option
+@sunspecdemo.clishared.serial_port_option
+@sunspecdemo.clishared.serial_baudrate_option
+@sunspecdemo.clishared.timeout_option
+@sunspecdemo.clishared.model_path_option
 @invert_enable_option
-@epcsunspecdemo.clishared.slave_id_option
+@sunspecdemo.clishared.slave_id_option
 @cycles_option
 @click.pass_obj
 def serial(
@@ -304,7 +304,7 @@ def serial(
         baudrate,
         cycles,
 ):
-    with epcsunspecdemo.utils.fresh_smdx_path(model_path):
+    with sunspecdemo.utils.fresh_smdx_path(model_path):
         device = sunspec.core.client.SunSpecClientDevice(
             slave_id=slave_id,
             device_type=sunspec.core.client.RTU,
@@ -323,12 +323,12 @@ def serial(
 @click.command(
     help='Demo Modbus TCP connection',
 )
-@epcsunspecdemo.clishared.tcp_address_option
-@epcsunspecdemo.clishared.tcp_port_option
-@epcsunspecdemo.clishared.timeout_option
-@epcsunspecdemo.clishared.model_path_option
+@sunspecdemo.clishared.tcp_address_option
+@sunspecdemo.clishared.tcp_port_option
+@sunspecdemo.clishared.timeout_option
+@sunspecdemo.clishared.model_path_option
 @invert_enable_option
-@epcsunspecdemo.clishared.slave_id_option
+@sunspecdemo.clishared.slave_id_option
 @cycles_option
 @click.pass_obj
 def tcp(
@@ -341,7 +341,7 @@ def tcp(
         slave_id,
         cycles,
 ):
-    with epcsunspecdemo.utils.fresh_smdx_path(model_path):
+    with sunspecdemo.utils.fresh_smdx_path(model_path):
         device = sunspec.core.client.SunSpecClientDevice(
             slave_id=slave_id,
             device_type=sunspec.core.client.TCP,

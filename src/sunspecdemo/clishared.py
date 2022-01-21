@@ -5,7 +5,7 @@ import click
 import serial.serialutil
 import sunspec.core.client
 
-import epcsunspecdemo.utils
+import sunspecdemo.utils
 
 
 model_path_option = click.option(
@@ -115,7 +115,7 @@ class RtuDeviceFactory:
     model_path = attr.ib()
 
     def __call__(self):
-        with epcsunspecdemo.utils.fresh_smdx_path(self.model_path):
+        with sunspecdemo.utils.fresh_smdx_path(self.model_path):
             return sunspec.core.client.SunSpecClientDevice(
                 slave_id=self.slave_id,
                 device_type=sunspec.core.client.RTU,
@@ -134,7 +134,7 @@ class TcpDeviceFactory:
     model_path = attr.ib()
 
     def __call__(self):
-        with epcsunspecdemo.utils.fresh_smdx_path(self.model_path):
+        with sunspecdemo.utils.fresh_smdx_path(self.model_path):
             return sunspec.core.client.SunSpecClientDevice(
                 slave_id=self.slave_id,
                 device_type=sunspec.core.client.TCP,
@@ -152,16 +152,16 @@ class Commands:
     @classmethod
     def build(cls, options, common):
         common_options = (
-            epcsunspecdemo.clishared.timeout_option,
-            epcsunspecdemo.clishared.slave_id_option,
-            epcsunspecdemo.clishared.model_path_option,
+            sunspecdemo.clishared.timeout_option,
+            sunspecdemo.clishared.slave_id_option,
+            sunspecdemo.clishared.model_path_option,
         )
 
         @click.command()
-        @epcsunspecdemo.utils.apply_decorators(options)
+        @sunspecdemo.utils.apply_decorators(options)
         @serial_port_option
         @serial_baudrate_option
-        @epcsunspecdemo.utils.apply_decorators(common_options)
+        @sunspecdemo.utils.apply_decorators(common_options)
         def rtu(port, baudrate, timeout, slave_id, model_path, **kwargs):
             device_factory = RtuDeviceFactory(
                 port=port,
@@ -177,10 +177,10 @@ class Commands:
             )
 
         @click.command()
-        @epcsunspecdemo.utils.apply_decorators(options)
+        @sunspecdemo.utils.apply_decorators(options)
         @tcp_address_option
         @tcp_port_option
-        @epcsunspecdemo.utils.apply_decorators(common_options)
+        @sunspecdemo.utils.apply_decorators(common_options)
         def tcp(address, port, timeout, slave_id, model_path, **kwargs):
             device_factory = TcpDeviceFactory(
                 address=address,

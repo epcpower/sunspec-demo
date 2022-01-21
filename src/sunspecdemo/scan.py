@@ -5,7 +5,7 @@ import click
 
 import sunspec.core.client
 
-import epcsunspecdemo.utils
+import sunspecdemo.utils
 
 
 @attr.s
@@ -58,10 +58,10 @@ node_id_range_option = click.option(
 @cli.command(
     help='Scan over Modbus RTU',
 )
-@epcsunspecdemo.clishared.serial_port_option
-@epcsunspecdemo.clishared.serial_baudrate_option
-@epcsunspecdemo.clishared.timeout_option
-@epcsunspecdemo.clishared.model_path_option
+@sunspecdemo.clishared.serial_port_option
+@sunspecdemo.clishared.serial_baudrate_option
+@sunspecdemo.clishared.timeout_option
+@sunspecdemo.clishared.model_path_option
 @node_id_range_option
 def serial(
         port,
@@ -86,10 +86,10 @@ def serial(
 @cli.command(
     help='Scan over Modbus TCP',
 )
-@epcsunspecdemo.clishared.tcp_address_option
-@epcsunspecdemo.clishared.tcp_port_option
-@epcsunspecdemo.clishared.timeout_option
-@epcsunspecdemo.clishared.model_path_option
+@sunspecdemo.clishared.tcp_address_option
+@sunspecdemo.clishared.tcp_port_option
+@sunspecdemo.clishared.timeout_option
+@sunspecdemo.clishared.model_path_option
 @node_id_range_option
 def tcp(
         address,
@@ -126,7 +126,7 @@ def common(
 
     for slave_id in range(slave_id_range[0], slave_id_range[1] + 1):
         click.echo('-- Scanning node {}'.format(slave_id))
-        with epcsunspecdemo.utils.fresh_smdx_path(model_path):
+        with sunspecdemo.utils.fresh_smdx_path(model_path):
             try:
                 device_factory.build(
                     slave_id=slave_id,

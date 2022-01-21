@@ -2,7 +2,7 @@ import sys
 
 import click
 
-import epcsunspecdemo.clishared
+import sunspecdemo.clishared
 
 
 @click.group(
@@ -62,10 +62,10 @@ def common(device_factory, model_name, point_names):
                 click.echo('    {}: {}'.format(point_name, point.value))
 
 
-commands = epcsunspecdemo.clishared.Commands.build(
+commands = sunspecdemo.clishared.Commands.build(
     options=(
-        epcsunspecdemo.clishared.model_name_option,
-        epcsunspecdemo.clishared.point_names_option,
+        sunspecdemo.clishared.model_name_option,
+        sunspecdemo.clishared.point_names_option,
     ),
     common=common,
 )

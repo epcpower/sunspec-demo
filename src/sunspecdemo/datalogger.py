@@ -7,7 +7,7 @@ import sunspec.core.suns
 import toolz
 import tqdm
 
-import epcsunspecdemo.clishared
+import sunspecdemo.clishared
 
 
 @click.group(
@@ -109,7 +109,7 @@ def common(device_factory, registers_per_read, log_file):
         log_file.write(bytes(block))
 
 
-commands = epcsunspecdemo.clishared.Commands.build(
+commands = sunspecdemo.clishared.Commands.build(
     options=(
         click.option(
             '--registers-per-read',

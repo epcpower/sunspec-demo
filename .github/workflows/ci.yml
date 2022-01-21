@@ -49,15 +49,13 @@ jobs:
           poetry install
 
       - name: Package executable
-        env:
-          TWINE_USERNAME : ${{ secrets.TWINE_USERNAME }}
-          TWINE_PASSWORD : ${{ secrets.TWINE_PASSWORD }}
+
         run: |
           #set the versioning in __init__.py
           poetry run poetry-dynamic-versioning.exe
           poetry run pyinstaller pyinstaller.spec
           poetry build
-          poetry publish -u ${{ secrets.TWINE_USERNAME }} -p ${{ secrets.TWINE_PASSWORD }}
+          #poetry publish -u ${{ secrets.TWINE_USERNAME }} -p ${{ secrets.TWINE_PASSWORD }}
 
       - name: Check and report executable version
         shell: python
@@ -68,7 +66,7 @@ jobs:
           import sys
 
           completed_process = subprocess.run(
-              ["dist/epcsunspecdemo", "--version"],
+              ["dist/sunspecdemo", "--version"],
               capture_output=True,
               check=True,
           )
@@ -83,7 +81,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: executable
-          path: dist/epcsunspecdemo.exe
+          path: dist/sunspecdemo.exe
 
   all:
     name: All

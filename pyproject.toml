@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "epcsunspecdemo"
+name = "sunspecdemo"
 version = "0.1.1"
 description = ""
 authors = ["Alex Anker <alex.anker@epcpower.com>"]
@@ -11,7 +11,7 @@ vcs = "git"
 format = "{base}"
 
 [tool.poetry-dynamic-versioning.substitution]
-files = ["src/epcsunspecdemo/__init__.py"]
+files = ["src/sunspecdemo/__init__.py"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -33,7 +33,7 @@ poetry-dynamic-versioning = "^0.13.1"
 
 
 [tool.poetry.scripts]
-epcsunspecdemo = 'epcsunspecdemo.cli:cli'
+sunspecdemo = 'sunspecdemo.cli:cli'
 
 [build-system]
 requires = ["setuptools", "poetry-core>=1.0.0", "poetry-dynamic-versioning"]

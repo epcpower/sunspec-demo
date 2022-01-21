@@ -33,7 +33,7 @@ Windows & Linux
 ::
 
     poetry install
-    poetry run epcsunspecdemo get-models
+    poetry run sunspecdemo get-models
 
 
 -------
