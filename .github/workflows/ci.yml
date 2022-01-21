@@ -54,7 +54,7 @@ jobs:
           #set the versioning in __init__.py
           poetry run poetry-dynamic-versioning.exe
           poetry run pyinstaller pyinstaller.spec
-          poetry build
+          #poetry build
           #poetry publish -u ${{ secrets.TWINE_USERNAME }} -p ${{ secrets.TWINE_PASSWORD }}
 
       - name: Check and report executable version
