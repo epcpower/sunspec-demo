@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry-dynamic-versioning]
 enable = false
 vcs = "git"
-#format = "{base}"
+format = "{base}"
 
 [tool.poetry-dynamic-versioning.substitution]
 files = ["src/sunspecdemo/__init__.py"]
