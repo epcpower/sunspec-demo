@@ -6,7 +6,7 @@ authors = ["Alex Anker <alex.anker@epcpower.com>"]
 license = "MIT"
 
 [tool.poetry-dynamic-versioning]
-enable = false
+enable = true
 vcs = "git"
 style = "pep440"
 
