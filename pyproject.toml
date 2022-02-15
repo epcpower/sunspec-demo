@@ -16,11 +16,11 @@ files = ["src/sunspecdemo/__init__.py"]
 [tool.poetry.dependencies]
 python = "^3.7"
 attrs = ">=19.3.0"
-click = "^7.0"
+click = "<=7.1.2"
 toolz = "0.9.0"
 tqdm = "4.32.1"
 pysunspec = "2.1.1"
-setuptools = "53.0.0"
+setuptools = ">=58.3.0"
 toml = "^0.10.2"
 importlib = "^1.0.4"
 importlib-metadata = "^4.10.1"
