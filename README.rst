@@ -23,9 +23,12 @@ Additionally this program acts as a basic example of using the `pysunspec`_ Pyth
 Installation
 ------------
 
-Must install poetry & poetry-dynamic-versionioning
-pip install poetry
-pip install poetry-dynamic-versioning
+The ``poetry`` & ``poetry-dynamic-versioning`` packages must be installed.
+
+::
+
+    pip install poetry
+    pip install poetry-dynamic-versioning
 
 Windows & Linux
 =======
