@@ -27,7 +27,7 @@ toml = "^0.10.2"
 importlib = "^1.0.4"
 importlib-metadata = "^4.10.1"
 typing-extensions = "^4.0.1"
-pyserial = "^3.5"
+pyserial = "3.4"
 
 [tool.poetry.dev-dependencies]
 gitignoreio = "0.1.5"
