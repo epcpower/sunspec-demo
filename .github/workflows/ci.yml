@@ -85,7 +85,7 @@ jobs:
       - name: Archive executable
         uses: actions/upload-artifact@v2
         with:
-          name: executable
+          name: Sunspecdemo_executable
           path: dist/sunspecdemo.exe
 
   all:
