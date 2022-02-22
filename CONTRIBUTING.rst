@@ -8,7 +8,7 @@ Summary
 - The ``main`` branch must never be broken.
 - Development is performed in feature branches, requiring peer reviewed pull requests to merge into ``main``. See step-by-step instructions below.
 - A release requires a release branch, detailed in the step-by-step instructions below.
-- The ``versioneer`` package automatically manages version handling code.
+- The ``poetry-dynamic-versioning`` package automatically manages version handling code.
 
 Step-by-step feature / bug fix
 ------------------------------
