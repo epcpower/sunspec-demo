@@ -31,7 +31,7 @@ The ``poetry`` & ``poetry-dynamic-versioning`` packages must be installed.
     pip install poetry-dynamic-versioning
 
 Windows & Linux
-=======
+===============
 
 ::
 
