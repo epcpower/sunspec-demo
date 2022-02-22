@@ -4,7 +4,6 @@ version = "0.1.95.post1.dev0+a38984c"
 description = "EPC SunSpec demonstration tool"
 authors = ["Alex Anker <alex.anker@epcpower.com>"]
 license = "MIT"
-readme = "README.rst"
 
 [tool.poetry-dynamic-versioning]
 enable = false
