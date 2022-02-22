@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sunspecdemo"
-version = "0.1.95.post1.dev0+a38984c"
+version = "0.0.0"
 description = "EPC SunSpec demonstration tool"
 authors = ["Alex Anker <alex.anker@epcpower.com>"]
 license = "MIT"
