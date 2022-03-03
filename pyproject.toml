@@ -7,11 +7,13 @@ license = "MIT"
 readme = "README.rst"
 
 [tool.poetry-dynamic-versioning]
+#set to false, used in CI
 enable = false
 vcs = "git"
 style = "pep440"
 
 [tool.poetry-dynamic-versioning.substitution]
+#poetry auto substitution doesnt cover init files 2 directories past root
 files = ["src/sunspecdemo/__init__.py"]
 
 [tool.poetry.dependencies]
@@ -21,7 +23,6 @@ click = "^7.0"
 toolz = "0.9.0"
 tqdm = "4.32.1"
 pysunspec = "2.1.0"
-setuptools = ">=53.0.0"
 toml = "^0.10.2"
 importlib = "^1.0.4"
 importlib-metadata = "^4.10.1"
