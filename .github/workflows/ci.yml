@@ -96,15 +96,7 @@ jobs:
         #only run if a new tag is created
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          #poetry publish -u __token__ -p ${{ secrets.TWINE_TOKEN }}
-          #poetry publish --repository epc-power
-
-          #Set Up AWS Connection
-          aws codeartifact login --tool twine --repository epc-power --domain epc-power-us --domain-owner ${{ secrets.AWS_ACCOUNT_ID }}
-          #Twine Upload
-          poetry run twine upload --repository codeartifact dist/*
-
-
+          poetry publish --repository epc-power
       - name: Archive executable
         uses: actions/upload-artifact@v2
         with:
