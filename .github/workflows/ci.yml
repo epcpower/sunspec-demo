@@ -98,11 +98,11 @@ jobs:
         run: |
           #poetry publish -u __token__ -p ${{ secrets.TWINE_TOKEN }}
           #poetry publish --repository epc-power
-          
+
           #Set Up AWS Connection
           aws codeartifact login --tool twine --repository epc-power --domain epc-power-us --domain-owner ${{ secrets.AWS_ACCOUNT_ID }}
           #Twine Upload
-          twine upload --repository codeartifact dist/*
+          poetry run twine upload --repository codeartifact dist/*
 
 
       - name: Archive executable
