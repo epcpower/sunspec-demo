@@ -25,7 +25,7 @@ tqdm = "4.32.1"
 pysunspec = "2.1.0"
 setuptools = ">=53.0.0"
 toml = "^0.10.2"
-#importlib = "^1.0.4"
+#importlib = "^1.0.4"  #https://github.com/epcpower/sunspec-demo/actions/runs/2041856998 This randomly started failing.  Only for python 3.0 and older, leaving commented.
 #importlib-metadata = "^4.10.1"
 typing-extensions = "^4.0.1"
 pyserial = "3.4"
