@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.rst"
 
 [tool.poetry-dynamic-versioning]
-#set to false, used in CI
+#set to false, poetry-dynamic-versioning used only in CI
 enable = false
 vcs = "git"
 style = "pep440"

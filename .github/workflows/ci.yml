@@ -68,7 +68,7 @@ jobs:
       - name: Package executable
         run: |
           # set the versioning
-          poetry run poetry-dynamic-versioning.exe
+          poetry run poetry-dynamic-versioning
           poetry run pyinstaller pyinstaller.spec
           poetry build
 
