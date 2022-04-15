@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "sunspecdemo"
+version = "0.0.0"
+description = "EPC SunSpec demonstration tool"
+authors = ["Alex Anker <alex.anker@epcpower.com>"]
+license = "MIT"
+readme = "README.rst"
+
+[tool.poetry-dynamic-versioning]
+#set to false, poetry-dynamic-versioning used only in CI
+enable = false
+vcs = "git"
+style = "pep440"
+
+[tool.poetry-dynamic-versioning.substitution]
+#poetry auto substitution doesnt cover init files 2 directories past root
+files = ["src/sunspecdemo/__init__.py"]
+
+[tool.poetry.dependencies]
+python = ">=3.7.9,<3.11"
+attrs = ">=19.3.0"
+click = "^7.0"
+toolz = "0.9.0"
+tqdm = "4.32.1"
+pysunspec = "2.1.0"
+setuptools = ">=53.0.0"
+toml = "^0.10.2"
+#importlib = "^1.0.4"  #https://github.com/epcpower/sunspec-demo/actions/runs/2041856998 This randomly started failing.  Only for python 3.0 and older, leaving commented.
+#importlib-metadata = "^4.10.1"
+typing-extensions = "^4.0.1"
+pyserial = "3.4"
+
+[tool.poetry.dev-dependencies]
+gitignoreio = "0.1.5"
+poetry-dynamic-versioning = "^0.13.1"
+pyinstaller = "4.4"
+
+
+[tool.poetry.scripts]
+sunspecdemo = 'sunspecdemo.cli:cli'
+
+[build-system]
+requires = ["setuptools", "poetry-core>=1.0.0", "poetry-dynamic-versioning",]
+build-backend = "poetry.core.masonry.api"

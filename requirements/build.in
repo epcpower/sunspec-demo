@@ -1,3 +1,0 @@
---requirement base.in
-
-pyinstaller==4.2

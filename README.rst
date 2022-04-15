@@ -2,15 +2,13 @@
 EPC SunSpec Demo
 ================
 
-|github actions| |github source|
-
-.. |github source| image:: https://img.shields.io/github/last-commit/epcpower/sunspec-demo/main.svg
-   :alt: source on GitHub
-   :target: https://github.com/epcpower/sunspec-demo
-
-.. |github actions| image:: https://img.shields.io/github/workflow/status/epcpower/sunspec-demo/CI/main?color=seagreen&logo=GitHub-Actions&logoColor=whitesmoke
+.. image:: https://img.shields.io/github/workflow/status/epcpower/sunspec-demo/CI/main?color=seagreen&logo=GitHub-Actions&logoColor=whitesmoke
    :alt: tests on GitHub Actions
    :target: https://github.com/epcpower/sunspec-demo/actions?query=branch%3Amain
+
+.. image:: https://img.shields.io/github/last-commit/epcpower/sunspec-demo/main.svg
+   :alt: source on GitHub
+   :target: https://github.com/epcpower/sunspec-demo
 
 The EPC SunSpec demo implements basic SunSpec communications with EPC converters.
 SunSpec is built on Modbus and works with both Modbus RTU (direct serial) and Modbus TCP connections.
@@ -23,25 +21,20 @@ Additionally this program acts as a basic example of using the `pysunspec`_ Pyth
 Installation
 ------------
 
-While ``boots.py`` can be run with Python 2.7 and 3.4+, it uses Python 3.7 to create a venv.
-
-
-Windows
-=======
+The ``poetry`` & ``poetry-dynamic-versioning`` packages must be installed.
 
 ::
 
-    py boots.py ensure
-    venv\Scripts\epcsunspecdemo get-models
+    pip install poetry
+    pip install poetry-dynamic-versioning
 
-
-Linux
-=====
+Windows & Linux
+===============
 
 ::
 
-    python boots.py ensure
-    venv/bin/epcsunspecdemo get-models
+    poetry install
+    poetry run sunspecdemo get-models
 
 
 -------

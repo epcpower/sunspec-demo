@@ -1,9 +1,0 @@
---requirement pre.in
-
-attrs==18.2.0
-click==7
-gitignoreio==0.1.5
-toolz==0.9.0
-tqdm==4.32.1
-
-pysunspec==2.1.0

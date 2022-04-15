@@ -43,7 +43,7 @@ def Entrypoint(dist, group, name, **kwargs):
     )
 
 
-name = 'epcsunspecdemo'
+name = 'sunspecdemo'
 
 a = Entrypoint(
     dist=name,

@@ -3,7 +3,7 @@ import pathlib
 import click
 import requests
 
-import epcsunspecdemo.clishared
+import sunspecdemo.clishared
 
 
 smdx_file_template = 'smdx_{model_index:05}.xml'
@@ -33,7 +33,7 @@ url_template = (
     default=[65534],
     help='Model number to download',
 )
-@epcsunspecdemo.clishared.model_path_option
+@sunspecdemo.clishared.model_path_option
 def get_models(version, model_indexes, model_path):
     version = version.split('.')
 

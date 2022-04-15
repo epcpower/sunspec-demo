@@ -1,4 +1,0 @@
-graft src
-LICENSE
-include versioneer.py
-include src/epcsunspecdemo/_version.py
