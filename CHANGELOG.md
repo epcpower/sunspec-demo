@@ -12,3 +12,6 @@ For instructions, see the [changelog confluence page](https://epcpower.atlassian
 - SC-760: Pin poetry to 1.1.15 in CI
 - SC-572: Added changelog for release notes.
 
+### CI
+
+- SC-1101: Update actions versions to alleviate CI build warnings
