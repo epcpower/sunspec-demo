@@ -107,7 +107,7 @@ jobs:
         run: |
           poetry publish --repository epc-power
       - name: Archive executable
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Sunspecdemo_executable
           path: dist/sunspecdemo.exe
