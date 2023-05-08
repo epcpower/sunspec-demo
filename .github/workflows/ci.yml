@@ -59,11 +59,6 @@ jobs:
 
           poetry config virtualenvs.in-project true
           poetry config virtualenvs.path .
-          # python3 -m ensurepip
-          # python3 -m pip install --upgrade pip
-          # python3 -m pip install poetry==1.1.15
-          # poetry config virtualenvs.in-project true
-          # poetry config virtualenvs.path .
 
           #Setup AWS Connection
           poetry config repositories.epc-power https://epc-power-us-${{ secrets.AWS_ACCOUNT_ID }}.d.codeartifact.us-east-2.amazonaws.com/pypi/epc-power/
