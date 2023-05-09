@@ -14,5 +14,5 @@ For instructions, see the [changelog confluence page](https://epcpower.atlassian
 
 ### CI
 
-- SC-1101: Update ci.yml actions to fix poetry version issue
+- SC-1101: Pin versions of all python packages for installing poetry
 - SC-1101: Update actions versions to alleviate CI build warnings
