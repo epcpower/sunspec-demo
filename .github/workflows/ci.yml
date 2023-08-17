@@ -52,7 +52,7 @@ jobs:
         run: |
           python3 -m ensurepip
           python3 -m pip install --upgrade pip
-          python3 -m pip install poetry==1.1.15
+          python3 -m pip install poetry==1.5.1
           poetry config virtualenvs.in-project true
           poetry config virtualenvs.path .
 
@@ -68,7 +68,6 @@ jobs:
       - name: Package executable
         run: |
           # set the versioning
-          poetry run poetry-dynamic-versioning
           poetry run pyinstaller pyinstaller.spec
           poetry build
 

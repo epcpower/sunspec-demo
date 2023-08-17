@@ -7,10 +7,10 @@ license = "MIT"
 readme = "README.rst"
 
 [tool.poetry-dynamic-versioning]
-#set to false, poetry-dynamic-versioning used only in CI
-enable = false
+#set to false.  poetry-dynamic-versioning only needed for CI versioning.
+enable = true
 vcs = "git"
-style = "pep440"
+style = "semver"
 
 [tool.poetry-dynamic-versioning.substitution]
 #poetry auto substitution doesnt cover init files 2 directories past root
@@ -32,7 +32,6 @@ pyserial = "3.4"
 
 [tool.poetry.dev-dependencies]
 gitignoreio = "0.1.5"
-poetry-dynamic-versioning = "^0.13.1"
 pyinstaller = "4.4"
 
 
@@ -41,4 +40,4 @@ sunspecdemo = 'sunspecdemo.cli:cli'
 
 [build-system]
 requires = ["setuptools", "poetry-core>=1.0.0", "poetry-dynamic-versioning",]
-build-backend = "poetry.core.masonry.api"
+build-backend = "poetry_dynamic_versioning.backend"
