@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - "**" #double star includes a '/'.  single star doesnt match a '/'
     tags:
       - v*
   pull_request:
