@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - Story/SC-1340
     tags:
       - v*
   pull_request:
