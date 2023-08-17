@@ -9,6 +9,7 @@ For instructions, see the [changelog confluence page](https://epcpower.atlassian
 
 ### Added
 
+- SC-1340: Update poetry to 1.5.1 in CI
 - SC-760: Pin poetry to 1.1.15 in CI
 - SC-572: Added changelog for release notes.
 
