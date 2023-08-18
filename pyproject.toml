@@ -1,5 +1,9 @@
 [tool.poetry]
 name = "sunspecdemo"
+# For development and git commit, the __version__ variable below is set
+# The version variable below is set to the generic build placeholder "0.0.0".
+# (In other words: leave alone!) During CI, poetry dynamic versioning
+# modifies the __version__ variable in the applicable __init__.py file.
 version = "0.0.0"
 description = "EPC SunSpec demonstration tool"
 authors = ["Alex Anker <alex.anker@epcpower.com>"]
