@@ -62,6 +62,7 @@ jobs:
           export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain epc-power-us --domain-owner ${{ secrets.AWS_ACCOUNT_ID }} --query authorizationToken --output text`
           poetry config http-basic.epc-power aws $CODEARTIFACT_AUTH_TOKEN
 
+          poetry self add "poetry-dynamic-versioning[plugin]"
           poetry config --list
           poetry install
 
