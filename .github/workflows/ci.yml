@@ -33,7 +33,7 @@ jobs:
             matrix: x64
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -50,6 +50,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: Install Poetry and Venv
         run: |
+          #install Poetry
           python3 -m ensurepip
           python3 -m pip install --upgrade pip
           python3 -m pip install poetry==1.5.1
@@ -96,7 +97,7 @@ jobs:
         run: |
           poetry publish --repository epc-power
       - name: Archive executable
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Sunspecdemo_executable
           path: dist/sunspecdemo.exe
