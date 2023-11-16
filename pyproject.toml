@@ -32,7 +32,7 @@ toml = "^0.10.2"
 typing-extensions = "^4.0.1"
 pyserial = "3.4"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 gitignoreio = "0.1.5"
 pyinstaller = "4.4"
 
