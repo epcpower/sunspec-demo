@@ -1,5 +1,8 @@
 [tool.poetry]
 name = "sunspecdemo"
+# The version variable below is set to the generic build placeholder "0.0.0".
+# (In other words: leave alone!) During CI, poetry dynamic versioning
+# modifies the __version__ variable in the applicable __init__.py file.
 version = "0.0.0"
 description = "EPC SunSpec demonstration tool"
 authors = ["Alex Anker <alex.anker@epcpower.com>"]
@@ -7,8 +10,7 @@ license = "MIT"
 readme = "README.rst"
 
 [tool.poetry-dynamic-versioning]
-#set to false, poetry-dynamic-versioning used only in CI
-enable = false
+enable = true
 vcs = "git"
 style = "pep440"
 
@@ -30,9 +32,8 @@ toml = "^0.10.2"
 typing-extensions = "^4.0.1"
 pyserial = "3.4"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 gitignoreio = "0.1.5"
-poetry-dynamic-versioning = "^0.13.1"
 pyinstaller = "4.4"
 
 
@@ -40,5 +41,10 @@ pyinstaller = "4.4"
 sunspecdemo = 'sunspecdemo.cli:cli'
 
 [build-system]
-requires = ["setuptools", "poetry-core>=1.0.0", "poetry-dynamic-versioning",]
-build-backend = "poetry.core.masonry.api"
+requires = [
+    "setuptools", 
+    "poetry-core>=1.0.0", 
+    "poetry-dynamic-versioning>=1.0.0,<2.0.0",
+    
+]
+build-backend = "poetry_dynamic_versioning.backend"
