@@ -196,7 +196,7 @@ python-versions = "*"
 
 [[package]]
 name = "pysunspec"
-version = "2.1.0"
+version = "2.1.1"
 description = "Python SunSpec Tools"
 category = "main"
 optional = false
@@ -303,7 +303,7 @@ testing = ["big-o", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "f5bc2572947e853005a33d0d298fa99fb6268591a73cad0cf2cf069ee8d2ab70"
+content-hash = "8ecca2f5befa8294210a0d6e03b44e082248654008cd7d3d957dc7e7f603b574"
 
 [metadata.files]
 altgraph = [
@@ -529,8 +529,8 @@ pyserial = [
     {file = "pyserial-3.4.tar.gz", hash = "sha256:6e2d401fdee0eab996cf734e67773a0143b932772ca8b42451440cfed942c627"},
 ]
 pysunspec = [
-    {file = "pysunspec-2.1.0-py2.py3-none-any.whl", hash = "sha256:97dbd776796df2acf8b4610f546fc251af99aa6474181d91008cd2a1fdfb03fe"},
-    {file = "pysunspec-2.1.0.tar.gz", hash = "sha256:c4587736b107e72b411f1bb9a4cd9d4e7791217cb90533ca2ab87210151ae08c"},
+    {file = "pysunspec-2.1.1-py3-none-any.whl", hash = "sha256:af05b0a0449d75aaebb1a1134e740d4c81081291d5fd1f17bb882134a6021b20"},
+    {file = "pysunspec-2.1.1.tar.gz", hash = "sha256:9824c815a98935399029276837feb1f3d5749646415910317026d3b7f8d9a142"},
 ]
 pywin32-ctypes = [
     {file = "pywin32-ctypes-0.2.2.tar.gz", hash = "sha256:3426e063bdd5fd4df74a14fa3cf80a0b42845a87e1d1e81f6549f9daec593a60"},
